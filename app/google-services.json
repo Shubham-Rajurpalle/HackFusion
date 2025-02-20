@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302542657944",
+    "project_id": "hackfusion-45e6d",
+    "storage_bucket": "hackfusion-45e6d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302542657944:android:52a4fe8ec397fc3a8bb3ed",
+        "android_client_info": {
+          "package_name": "com.hackfusion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhpL50n_duGvAIkKOBvue_iRFqqEGLvwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
