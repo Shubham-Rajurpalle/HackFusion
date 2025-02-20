@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hackfusion.sign_in">
+    tools:context="com.hackfusion.signIn">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

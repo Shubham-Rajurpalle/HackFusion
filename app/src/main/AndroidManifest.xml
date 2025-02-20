@@ -13,19 +13,19 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
-            android:name="com.hackfusion.qr_scanner"
+            android:name="com.hackfusion.qrScanner"
             android:exported="false" />
         <activity
-            android:name="com.hackfusion.sign_up"
+            android:name="com.hackfusion.signUp"
             android:exported="false" />
         <activity
-            android:name="com.hackfusion.sign_in"
+            android:name="com.hackfusion.signIn"
             android:exported="false" />
         <activity
-            android:name="com.hackfusion.splash_screen"
+            android:name="com.hackfusion.splashScreen"
             android:exported="false" />
         <activity
-            android:name="com.hackfusion.Home"
+            android:name="com.hackfusion.home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,9 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.hackfusion.MainActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

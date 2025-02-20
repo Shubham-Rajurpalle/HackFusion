@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cricketapp.hackfusion.R
 
-class budget_faculty_fragment : Fragment() {
+class budgetFacultyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

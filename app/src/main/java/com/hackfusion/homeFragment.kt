@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cricketapp.hackfusion.R
 
-class Home_Fragment : Fragment() {
+class homeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
-import androidx.activity.addCallback
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ import androidx.fragment.app.Fragment
 import com.cricketapp.hackfusion.R
 import com.cricketapp.hackfusion.databinding.ActivityHomeBinding
 
-class Home : AppCompatActivity() {
+class home : AppCompatActivity() {
 
     private lateinit var binding:ActivityHomeBinding
 
@@ -53,9 +52,9 @@ class Home : AppCompatActivity() {
                 val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost)
                 val currentFragment = navHostFragment?.childFragmentManager?.fragments?.lastOrNull()
 
-                if (currentFragment !is Home_Fragment) {
+                if (currentFragment !is homeFragment) {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.navHost, Home_Fragment())
+                        .replace(R.id.navHost, homeFragment())
                         .addToBackStack(null)
                         .commit()
 
@@ -70,7 +69,7 @@ class Home : AppCompatActivity() {
         })
 
         if (savedInstanceState == null) {
-            switchFragment(Home_Fragment(), "Home")
+            switchFragment(homeFragment(), "Home")
         }
     }
 
@@ -78,11 +77,11 @@ class Home : AppCompatActivity() {
         binding.bottomNavigation.itemIconTintList = null
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.homeIcon -> switchFragment(Home_Fragment(), "Home")
-                R.id.electionIcon -> switchFragment(Election_Fragment(), "Election")
-                R.id.facilityIcon -> switchFragment(Facility_Fragment(), "Facility")
-                R.id.complaintIcon -> switchFragment(Complaint_Fragment(), "Complaint")
-                R.id.budgetIcon -> switchFragment(Budget_Fragment(), "Budget")
+                R.id.homeIcon -> switchFragment(homeFragment(), "Home")
+                R.id.electionIcon -> switchFragment(electionFragment(), "Election")
+                R.id.facilityIcon -> switchFragment(facilityFragment(), "Facility")
+                R.id.complaintIcon -> switchFragment(complaintFragment(), "Complaint")
+                R.id.budgetIcon -> switchFragment(budgetFragment(), "Budget")
                 else -> false
             }
             true
