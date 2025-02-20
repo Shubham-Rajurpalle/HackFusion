@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.cricketapp.hackfusion" />
+                  <option name="mobileSdkAppId" value="1:302542657944:android:52a4fe8ec397fc3a8bb3ed" />
+                  <option name="projectId" value="hackfusion-45e6d" />
+                  <option name="projectNumber" value="302542657944" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

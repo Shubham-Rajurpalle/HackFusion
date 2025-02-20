@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.hackfusion.MainActivity"
             android:exported="true" />
     </application>
 

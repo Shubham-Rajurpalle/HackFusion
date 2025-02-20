@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cricketapp.hackfusion.R
 
-class Facility_Fragment : Fragment() {
+class complaint_faculty_fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +17,6 @@ class Facility_Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_facility_, container, false)
+        return inflater.inflate(R.layout.fragment_complaint_faculty, container, false)
     }
 }
