@@ -9,4 +9,6 @@
     <color name="backgroud_bottom">#1E1E1E</color>
     <color name="background">#121212</color>
     <color name="primary">#1E88E5</color>
+    <color name="green">#26FF00</color>
+    <color name="yellow">#FFC100</color>
 </resources>

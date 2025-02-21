@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "302542657944",
-    "project_id": "hackfusion-45e6d",
-    "storage_bucket": "hackfusion-45e6d.firebasestorage.app"
+    "project_number": "858075178030",
+    "project_id": "hackfusion-f0648",
+    "storage_bucket": "hackfusion-f0648.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:302542657944:android:52a4fe8ec397fc3a8bb3ed",
+        "mobilesdk_app_id": "1:858075178030:android:0c0776e9b511bf33f52bbf",
         "android_client_info": {
           "package_name": "com.cricketapp.hackfusion"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDhpL50n_duGvAIkKOBvue_iRFqqEGLvwM"
+          "current_key": "AIzaSyAqBtVE2cYapyExai-EH0ElrPxb_uZLFrc"
         }
       ],
       "services": {

@@ -4,26 +4,31 @@
     <item
         android:id="@+id/homeIcon"
         android:icon="@drawable/homeicon"
-        android:title="Home"/>
+        android:title="Home"
+        android:scaleType="fitCenter"/>
 
     <item
         android:id="@+id/electionIcon"
         android:icon="@drawable/electionicon"
-        android:title="Election"/>
+        android:title="Election"
+        android:scaleType="fitCenter"/>
 
     <item
         android:id="@+id/facilityIcon"
         android:icon="@drawable/facilityicon"
-        android:title="Facility"/>
+        android:title="Facility"
+        android:scaleType="fitCenter"/>
 
     <item
         android:id="@+id/complaintIcon"
         android:icon="@drawable/complainticon"
-        android:title="Complaint"/>
+        android:title="Complaint"
+        android:scaleType="fitCenter"/>
 
     <item
         android:id="@+id/budgetIcon"
         android:icon="@drawable/budgeticon"
-        android:title="Budget"/>
+        android:title="Budget"
+        android:scaleType="fitCenter"/>
 
 </menu>

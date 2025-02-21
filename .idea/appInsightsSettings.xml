@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.cricketapp.hackfusion" />
-                  <option name="mobileSdkAppId" value="1:302542657944:android:52a4fe8ec397fc3a8bb3ed" />
-                  <option name="projectId" value="hackfusion-45e6d" />
-                  <option name="projectNumber" value="302542657944" />
+                  <option name="mobileSdkAppId" value="1:858075178030:android:0c0776e9b511bf33f52bbf" />
+                  <option name="projectId" value="hackfusion-f0648" />
+                  <option name="projectNumber" value="858075178030" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

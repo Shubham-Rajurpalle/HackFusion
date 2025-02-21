@@ -1,4 +1,4 @@
-package com.hackfusion
+package com.cricketapp.hackfusion
 
 import android.graphics.Color
 import android.os.Build
@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import com.cricketapp.hackfusion.R
 import com.cricketapp.hackfusion.databinding.ActivityHomeBinding
+import com.google.firebase.FirebaseApp
 
 class home : AppCompatActivity() {
 
@@ -43,6 +43,7 @@ class home : AppCompatActivity() {
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                         View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+        FirebaseApp.initializeApp(this)
         window.statusBarColor = Color.parseColor("#FFC100")
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         setupBottomNav()
@@ -78,7 +79,7 @@ class home : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeIcon -> switchFragment(homeFragment(), "Home")
-                R.id.electionIcon -> switchFragment(electionFragment(), "Election")
+                R.id.electionIcon -> switchFragment(ElectionFragment(), "com.cricketapp.hackfusion.com.cricketapp.hackfusion.Election")
                 R.id.facilityIcon -> switchFragment(facilityFragment(), "Facility")
                 R.id.complaintIcon -> switchFragment(complaintFragment(), "Complaint")
                 R.id.budgetIcon -> switchFragment(budgetFragment(), "Budget")

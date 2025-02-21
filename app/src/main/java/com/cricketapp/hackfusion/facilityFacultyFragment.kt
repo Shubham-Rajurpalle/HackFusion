@@ -1,13 +1,12 @@
-package com.hackfusion
+package com.cricketapp.hackfusion
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cricketapp.hackfusion.R
 
-class facilityFragment : Fragment() {
+class facilityFacultyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +16,6 @@ class facilityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_facility, container, false)
+        return inflater.inflate(R.layout.fragment_facility_faculty, container, false)
     }
 }
