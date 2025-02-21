@@ -1,5 +1,6 @@
 package com.cricketapp.hackfusion
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -29,6 +30,10 @@ class homeFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
         binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.profileBtn.setOnClickListener{
+            startActivity(Intent(requireContext(),profile_activity::class.java))
+        }
 
         adapter = ElectionAdapter(emptyList()) { election -> openElectionFragment(election.id) }
         binding.electionRecyclerView.adapter = adapter
@@ -77,3 +82,4 @@ class homeFragment : Fragment() {
         _binding = null
     }
 }
+

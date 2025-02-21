@@ -11,6 +11,8 @@ activity = "1.10.0"
 constraintlayout = "2.2.0"
 cameraLifecycle = "1.4.1"
 barcodeScanningCommon = "17.0.0"
+cardview = "1.0.0"
+firebaseAuthKtx = "23.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -23,6 +25,8 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
 barcode-scanning-common = { group = "com.google.mlkit", name = "barcode-scanning-common", version.ref = "barcodeScanningCommon" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

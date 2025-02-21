@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.barcode.scanning.common)
+    implementation(libs.androidx.cardview)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

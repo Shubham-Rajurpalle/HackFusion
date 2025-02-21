@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFF4E0"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="20dp"
+        android:elevation="4dp"
+        android:layout_margin="10dp"
+        android:clipToOutline="true">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Booking Facility"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="10dp" />
+
+        <!-- Facility Dropdown -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinnerFacility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="8dp" />
+
+        <!-- Calendar Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="10dp" />
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dateTextAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- Time Selection -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp">
+
+            <Button
+                android:id="@+id/btnStartTime"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Start Time" />
+
+            <Button
+                android:id="@+id/btnEndTime"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="End Time"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+
+        <!-- Purpose Input -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purpose"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="10dp" />
+
+        <EditText
+            android:id="@+id/etPurpose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter purpose of booking"
+            android:background="@android:drawable/edit_text"
+            android:padding="10dp"
+            android:minHeight="80dp" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#2E7D32"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+</ScrollView>

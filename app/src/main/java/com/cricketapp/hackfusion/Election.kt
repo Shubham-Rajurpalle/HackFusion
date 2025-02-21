@@ -8,5 +8,7 @@ data class Election(
     val votes: Map<String, Int> = emptyMap(),
     val totalVotes: Int = 0,
     val startTime: Long = 0L,
-    val endTime: Long = 0L
+    val endTime: Long = 0L,
+    val winner: String = "",
+    val voters: Map<String, String> = emptyMap()
 )
