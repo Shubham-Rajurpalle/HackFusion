@@ -109,14 +109,6 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Report Student Button -->
-            <Button
-                android:id="@+id/scanQrButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Report Student (Scan QR)"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/red"
-                android:textColor="@android:color/white"/>
 
             <!-- Conduct Violations Section -->
             <TextView
