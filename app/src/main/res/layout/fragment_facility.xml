@@ -3,33 +3,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="#DFF4E0"
-    android:padding="20dp">
+    android:padding="0dp">
 
-    <!-- Check Booking Status Button -->
-    <Button
-        android:id="@+id/btnCheckStatus"
+    <!-- Full-Width Yellow Strip -->
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/yellow"
+        android:text="Booking Facility"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:padding="10dp" />
+
+    <!-- Buttons Container -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Check Booking Status"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#1976D2"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="4dp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
-    <!-- Book a Facility Button -->
-    <Button
-        android:id="@+id/btnBookFacility"
+        <!-- Check Booking Status Button -->
+        <Button
+            android:id="@+id/btnCheckStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Check Status"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#1976D2"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Book a Facility Button -->
+        <Button
+            android:id="@+id/btnBookFacility"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Book Facility"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#2E7D32"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- RecyclerView for Booking Status -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBookings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Book a Facility"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#2E7D32"
-        android:padding="12dp"
-        android:elevation="4dp" />
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:visibility="visible"/> <!-- Initially visible -->
 
 </LinearLayout>

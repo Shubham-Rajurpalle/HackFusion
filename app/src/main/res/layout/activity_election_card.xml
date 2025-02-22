@@ -2,28 +2,28 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_120sdp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="@dimen/_5sdp"
-    app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="@color/blue"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/grey"
-    app:strokeWidth="1dp">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_140sdp"
+    android:layout_margin="@dimen/_6sdp"
+    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="12dp"
+    app:strokeColor="@color/lightGrey"
+    app:strokeWidth="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp">
+        android:layout_height="match_parent"
+        android:padding="@dimen/_10sdp">
 
         <TextView
             android:id="@+id/tvElectionName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_15sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/chipStatus"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,12 +32,15 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipStatus"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            app:chipCornerRadius="50dp"
+            app:chipCornerRadius="20dp"
+            app:chipStrokeWidth="1dp"
+            app:chipStrokeColor="@color/black"
+            app:chipBackgroundColor="@color/green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Active" />
@@ -49,23 +52,40 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Candidates"
             android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvElectionName" />
 
-
         <HorizontalScrollView
             android:id="@+id/horizontalviewchip"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="5dp"
+            android:scrollbars="none"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCandidatesLabel">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupCandidates"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"
+                app:chipSpacingHorizontal="8dp">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Candidate 1"
+                    android:textColor="@color/black"
+                    app:chipCornerRadius="18dp"
+                    app:chipStrokeWidth="2dp"
+                    app:chipStrokeColor="@color/yellow"
+                    app:chipBackgroundColor="@color/white"
+                    app:chipMinHeight="40dp"/>
+
+
+            </com.google.android.material.chip.ChipGroup>
 
         </HorizontalScrollView>
 
@@ -73,8 +93,8 @@
             android:id="@+id/tvTotalVotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#6A6969"
-            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/horizontalviewchip"
@@ -86,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
-            android:textSize="@dimen/_9sdp"
+            android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

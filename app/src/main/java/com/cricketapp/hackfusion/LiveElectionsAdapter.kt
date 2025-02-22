@@ -1,7 +1,10 @@
 package com.cricketapp.hackfusion
 
+import Election
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cricketapp.hackfusion.databinding.ItemLiveElectionBinding
@@ -9,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class LiveElectionsAdapter(
     private val liveElections: List<Election>,
-    private val onVoteClick: (String, String) -> Unit, // Takes electionId & candidateName
+    private val onVoteClick: (String, String) -> Unit, // electionId, candidateName
     private val onViewResultClick: (Election) -> Unit
 ) : RecyclerView.Adapter<LiveElectionsAdapter.LiveElectionViewHolder>() {
 
@@ -33,17 +36,32 @@ class LiveElectionsAdapter(
             binding.tvElectionName.text = election.electionName
             binding.tvElectionStatus.text = "Ending in ${getTimeRemaining(election.endTime)}"
 
+            val currentUserId = "34567986"// Get logged-in user ID
+            val hasVoted = election.voters.containsKey(currentUserId)
+
             binding.rvCandidates.layoutManager = LinearLayoutManager(binding.root.context)
             binding.rvCandidates.adapter = CandidatesAdapter(
-                election.candidates,  // Pass list of candidates
-                election.votes,       // Pass votes map
+                election.candidates,
+                election.votes,
+                hasVoted, // Disable vote button if already voted
                 onVoteClick = { candidateName ->
-                    onVoteClick(election.id, candidateName)
+                    if (!hasVoted) {
+                        onVoteClick(election.id, candidateName)
+                    }
                 }
             )
 
             binding.btnViewResult.setOnClickListener {
-                onViewResultClick(election)
+                val fragment = ViewResultFragment()
+                val bundle = Bundle()
+                bundle.putParcelable("election", election) // Pass election data
+                fragment.arguments = bundle
+
+                val activity = binding.root.context as AppCompatActivity
+                activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.result_view_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 

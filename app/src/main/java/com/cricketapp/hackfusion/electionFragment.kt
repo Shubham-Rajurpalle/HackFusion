@@ -1,5 +1,6 @@
 package com.cricketapp.hackfusion
 
+import Election
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,7 @@ class ElectionFragment : Fragment() {
         // Setup RecyclerView for Previous Elections
         previousAdapter=PreviousElectionsAdapter(previousElectionsList,
             {election: Election ->
-                
+
             })
         binding.recyclerPreviousElections.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerPreviousElections.adapter = previousAdapter
@@ -94,19 +95,32 @@ class ElectionFragment : Fragment() {
 
     private fun voteForCandidate(electionId: String, candidateName: String) {
         val electionRef = db.collection("elections").document(electionId)
+        val currentUserId = "34567986"
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(electionRef)
-            val votes = snapshot.get("votes") as MutableMap<String, Long>
 
-            val updatedVotes = (votes[candidateName] ?: 0) + 1
-            votes[candidateName] = updatedVotes
+            val votes = snapshot.get("votes") as MutableMap<String, Long>
+            val voters: MutableMap<String, String> = snapshot.get("voters") as? MutableMap<String, String> ?: mutableMapOf()
+            val totalVotes = snapshot.getLong("totalVotes") ?: 0L
+
+            if (voters.contains(currentUserId)) {
+                throw Exception("You have already voted!")
+            }
+
+            votes[candidateName] = (votes[candidateName] ?: 0) + 1
+
+            val updatedTotalVotes = totalVotes + 1
+
+            voters[currentUserId] = candidateName
 
             transaction.update(electionRef, "votes", votes)
+            transaction.update(electionRef, "totalVotes", updatedTotalVotes)
+            transaction.update(electionRef, "voters", voters)
         }.addOnSuccessListener {
-            fetchLiveElections() // Refresh list after voting
-        }.addOnFailureListener {
-            // Handle error
+            fetchLiveElections()
+        }.addOnFailureListener { e ->
+            // Handle error (e.g., show a toast message)
         }
     }
 

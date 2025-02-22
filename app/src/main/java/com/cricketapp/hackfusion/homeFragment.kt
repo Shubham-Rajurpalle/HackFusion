@@ -1,5 +1,6 @@
 package com.cricketapp.hackfusion
 
+import Election
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,6 +22,9 @@ class homeFragment : Fragment() {
     private lateinit var adapter: ElectionAdapter
     private val electionList = mutableListOf<Election>()
 
+    private lateinit var activityAdapter: ActivityAdapter
+    private val activityList = mutableListOf<Activity>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,16 +33,23 @@ class homeFragment : Fragment() {
         val view = binding.root
 
         db = FirebaseFirestore.getInstance()
-        binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.profileBtn.setOnClickListener{
-            startActivity(Intent(requireContext(),profile_activity::class.java))
-        }
-
+        // Election RecyclerView setup (No changes)
+        binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapter = ElectionAdapter(emptyList()) { election -> openElectionFragment(election.id) }
         binding.electionRecyclerView.adapter = adapter
-
         fetchElections()
+
+        // Activity RecyclerView setup (New addition)
+        binding.activityRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        activityAdapter = ActivityAdapter(emptyList())
+        binding.activityRecyclerView.adapter = activityAdapter
+        fetchActivities()
+
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), profile_activity::class.java))
+        }
+
         return view
     }
 
@@ -46,10 +57,7 @@ class homeFragment : Fragment() {
         db.collection("elections")
             .get()
             .addOnSuccessListener { snapshot ->
-                if (snapshot.isEmpty) {
-                    println("No Elections Found")
-                    return@addOnSuccessListener
-                }
+                if (snapshot.isEmpty) return@addOnSuccessListener
 
                 electionList.clear()
                 for (doc in snapshot.documents) {
@@ -58,6 +66,26 @@ class homeFragment : Fragment() {
                 }
 
                 adapter.updateList(electionList)
+            }
+            .addOnFailureListener { e ->
+                println("Firestore Error: ${e.message}")
+            }
+    }
+
+    private fun fetchActivities() {
+        db.collection("activities")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.isEmpty) return@addOnSuccessListener
+
+                activityList.clear()
+                for (doc in snapshot.documents) {
+                    val activity = doc.toObject(Activity::class.java)?.copy(id = doc.id)
+                    activity?.let { activityList.add(it) }
+                }
+
+                activityAdapter.updateList(activityList)
             }
             .addOnFailureListener { e ->
                 println("Firestore Error: ${e.message}")
@@ -73,6 +101,7 @@ class homeFragment : Fragment() {
             .replace(R.id.navHost, electionFragment)
             .addToBackStack(null)
             .commit()
+
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.selectedItemId = R.id.electionIcon
     }
@@ -82,4 +111,3 @@ class homeFragment : Fragment() {
         _binding = null
     }
 }
-

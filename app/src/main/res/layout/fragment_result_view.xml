@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/_20sdp"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:background="#FFD700"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Election Results"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold"
+            android:textColor="#000"/>
+    </LinearLayout>
+
+    <!-- Election Info -->
+    <TextView
+        android:id="@+id/tvElectionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Election Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textColor="#000"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="#CCCCCC"/>
+
+
+    <TextView
+        android:id="@+id/tvWinnerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Winner Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#333"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Total Votes -->
+    <TextView
+        android:id="@+id/tvTotalVotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Votes: 0"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="#555"
+        android:layout_marginTop="4dp"/>
+
+    <!-- Candidate Votes List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCandidates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"/>
+    <Button
+        android:id="@+id/btnBackToElections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Back to Elections"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FFD700"/>
+</LinearLayout>
