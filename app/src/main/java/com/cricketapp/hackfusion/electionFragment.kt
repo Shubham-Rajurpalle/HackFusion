@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cricketapp.hackfusion.databinding.FragmentElectionBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ElectionFragment : Fragment() {
@@ -94,7 +95,7 @@ class ElectionFragment : Fragment() {
 
     private fun voteForCandidate(electionId: String, candidateName: String) {
         val electionRef = db.collection("elections").document(electionId)
-        val currentUserId = "34567986"
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(electionRef)
@@ -111,7 +112,7 @@ class ElectionFragment : Fragment() {
 
             val updatedTotalVotes = totalVotes + 1
 
-            voters[currentUserId] = candidateName
+            voters[currentUserId!!] = candidateName
 
             transaction.update(electionRef, "votes", votes)
             transaction.update(electionRef, "totalVotes", updatedTotalVotes)

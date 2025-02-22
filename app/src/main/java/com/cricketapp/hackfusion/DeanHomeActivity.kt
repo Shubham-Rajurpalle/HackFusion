@@ -11,18 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import com.cricketapp.hackfusion.databinding.ActivityDeanHomeBinding
 import com.cricketapp.hackfusion.databinding.ActivityHomeBinding
 import com.google.firebase.FirebaseApp
 
 class DeanHomeActivity: AppCompatActivity() {
 
-    private lateinit var binding:ActivityHomeBinding
+    private lateinit var binding:ActivityDeanHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityDeanHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false

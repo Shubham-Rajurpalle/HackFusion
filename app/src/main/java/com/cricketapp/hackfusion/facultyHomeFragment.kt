@@ -1,18 +1,21 @@
 package com.cricketapp.hackfusion
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cricketapp.hackfusion.databinding.FragmentFacultyHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import androidx.activity.result.contract.ActivityResultContracts
 
 class FacultyHomeFragment : Fragment() {
 
@@ -39,19 +42,22 @@ class FacultyHomeFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         // Election RecyclerView setup
-        binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.electionRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         electionAdapter = ElectionAdapter(mutableListOf()) { election -> openElectionFragment(election.id) }
         binding.electionRecyclerView.adapter = electionAdapter
         fetchElections()
 
         // Activity RecyclerView setup
-        binding.activityRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.activityRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         activityAdapter = ActivityAdapter(mutableListOf())
         binding.activityRecyclerView.adapter = activityAdapter
         fetchActivities()
 
         // Caught Students RecyclerView setup
-        binding.caughtStudentRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.caughtStudentRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         caughtStudentsAdapter = CaughtStudentAdapter(mutableListOf())
         binding.caughtStudentRecycler.adapter = caughtStudentsAdapter
         fetchCaughtStudents()
@@ -63,7 +69,50 @@ class FacultyHomeFragment : Fragment() {
             startActivity(Intent(requireContext(), profile_activity::class.java))
         }
 
+        // QR Scanner Button Click
+        binding.scanQrButton.setOnClickListener {
+            val intent = Intent(requireContext(), QRScannerActivity::class.java)
+            qrScannerLauncher.launch(intent)
+        }
+
         return view
+    }
+
+    private val qrScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val scannedData = result.data?.getStringExtra("qrData")
+            if (!scannedData.isNullOrEmpty()) {
+                saveCaughtStudentToFirestore(scannedData)
+            } else {
+                Toast.makeText(requireContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveCaughtStudentToFirestore(scannedData: String) {
+        val studentData = scannedData.split(",") // Assuming QR contains "name,studentId"
+        if (studentData.size < 2) {
+            Toast.makeText(requireContext(), "Invalid QR Code format", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val student = hashMapOf(
+            "name" to studentData[0],
+            "studentId" to studentData[1],
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("studentsCaught")
+            .add(student)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Student added successfully!", Toast.LENGTH_SHORT).show()
+                fetchCaughtStudents() // Refresh RecyclerView
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun fetchUserName() {
@@ -78,16 +127,11 @@ class FacultyHomeFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val userName = document.getString("name") ?: "User"
-
-                    // **Check if `_binding` is null before updating UI**
                     _binding?.profilename?.text = "Hello $userName"
-                    println("Username updated to: $userName")
-                } else {
-                    println("No user document found")
                 }
             }
             .addOnFailureListener { e ->
-                println("Error fetching user: ${e.message}")
+                Log.e("FirestoreError", "Error fetching user: ${e.message}")
             }
     }
 
@@ -105,7 +149,7 @@ class FacultyHomeFragment : Fragment() {
                 electionAdapter.updateList(electionList)
             }
             .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
+                Log.e("FirestoreError", "Error fetching elections: ${e.message}")
             }
     }
 
@@ -124,12 +168,13 @@ class FacultyHomeFragment : Fragment() {
                 activityAdapter.updateList(notificationList)
             }
             .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
+                Log.e("FirestoreError", "Error fetching activities: ${e.message}")
             }
     }
 
     private fun fetchCaughtStudents() {
         db.collection("studentsCaught")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { snapshot ->
                 if (snapshot.isEmpty) return@addOnSuccessListener
@@ -142,7 +187,7 @@ class FacultyHomeFragment : Fragment() {
                 caughtStudentsAdapter.updateList(caughtStudentsList)
             }
             .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
+                Log.e("FirestoreError", "Error fetching caught students: ${e.message}")
             }
     }
 
@@ -156,7 +201,8 @@ class FacultyHomeFragment : Fragment() {
             .addToBackStack(null)
             .commit()
 
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.selectedItemId = R.id.electionIcon
     }
 

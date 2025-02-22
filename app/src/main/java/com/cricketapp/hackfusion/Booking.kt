@@ -1,12 +1,13 @@
 package com.cricketapp.hackfusion
 
 data class Booking(
+    var id: String = "",  // Unique Firebase ID (nullable)
     val facility: String = "",
     val purpose: String = "",
     val startTime: String = "",
     val endTime: String = "",
-    val approved: Boolean = false,  // Default to false
-    val bookedBy: String = ""  // Name of the user
+    val approved: Boolean = false,
+    val bookedBy: String = ""
 ) {
-    constructor() : this("", "", "", "", false, "")
+    constructor() : this("", "", "", "", "", false, "")
 }

@@ -7,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cricketapp.hackfusion.databinding.ItemLiveElectionBinding
+import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.TimeUnit
 
 class LiveElectionsAdapter(
-    private val liveElections: List<Election>,
+    private val liveElections: MutableList<Election>, // Changed List to MutableList for updates
     private val onVoteClick: (String, String) -> Unit, // electionId, candidateName
     private val onViewResultClick: (Election) -> Unit
 ) : RecyclerView.Adapter<LiveElectionsAdapter.LiveElectionViewHolder>() {
@@ -35,7 +36,8 @@ class LiveElectionsAdapter(
             binding.tvElectionName.text = election.electionName
             binding.tvElectionStatus.text = "Ending in ${getTimeRemaining(election.endTime)}"
 
-            val currentUserId = "34567986"// Get logged-in user ID
+            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
             val hasVoted = election.voters.containsKey(currentUserId)
 
             binding.rvCandidates.layoutManager = LinearLayoutManager(binding.root.context)
@@ -46,6 +48,14 @@ class LiveElectionsAdapter(
                     hasVoted, // Disable vote button if already voted
                     onVoteClick = { candidateName ->
                         if (!hasVoted) {
+                            // Update voters list
+                            election.voters[currentUserId!!] = "true"
+
+                            // Update the item in the list
+                            liveElections[adapterPosition] = election
+                            notifyItemChanged(adapterPosition)
+
+                            // Callback to handle vote logic
                             onVoteClick(election.id, candidateName)
                         }
                     }

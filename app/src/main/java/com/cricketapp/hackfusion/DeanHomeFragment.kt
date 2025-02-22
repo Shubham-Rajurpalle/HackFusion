@@ -1,15 +1,14 @@
 package com.cricketapp.hackfusion
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cricketapp.hackfusion.databinding.FragmentHomeBinding
+import com.cricketapp.hackfusion.databinding.FragmentDeanHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,7 +16,7 @@ import com.google.firebase.firestore.Query
 
 class DeanHomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentDeanHomeBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var db: FirebaseFirestore
@@ -31,40 +30,25 @@ class DeanHomeFragment : Fragment() {
     private val caughtStudentsList = mutableListOf<Student>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
+        _binding = FragmentDeanHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         db = FirebaseFirestore.getInstance()
 
-        // Election RecyclerView setup
-        binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        electionAdapter = ElectionAdapter(mutableListOf()) { election -> openElectionFragment(election.id) }
-        binding.electionRecyclerView.adapter = electionAdapter
-        fetchElections()
-
-        // Activity RecyclerView setup
-        binding.activityRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        activityAdapter = ActivityAdapter(mutableListOf())
-        binding.activityRecyclerView.adapter = activityAdapter
-        fetchActivities()
-
-        // Caught Students RecyclerView setup
-        binding.caughtStudentRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        caughtStudentsAdapter = CaughtStudentAdapter(mutableListOf())
-        binding.caughtStudentRecycler.adapter = caughtStudentsAdapter
-        fetchCaughtStudents()
-
-        // Fetch and update username
-        fetchUserName()
+        setupRecyclerViews()
+        fetchData()
 
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(requireContext(), profile_activity::class.java))
         }
 
-        return view
+        fetchUserName() // ✅ Calling AFTER View is created
     }
 
     private fun fetchUserName() {
@@ -72,21 +56,41 @@ class DeanHomeFragment : Fragment() {
         db.collection("users").document(userId)
             .get()
             .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val userName = document.getString("name") ?: "User"
-                    binding.toolbar.findViewById<TextView>(R.id.tvUserName).text = "Hello $userName"
-                }
+                if (!isAdded || _binding == null) return@addOnSuccessListener // ✅ Avoid NPE
+
+                val userName = document.getString("name") ?: "User"
+                binding.toolbar?.findViewById<TextView>(R.id.tvUserName)?.text = "Hello $userName"
             }
             .addOnFailureListener { e ->
                 println("Error fetching user: ${e.message}")
             }
     }
 
+    private fun setupRecyclerViews() {
+        binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        electionAdapter = ElectionAdapter(mutableListOf()) { election -> openElectionFragment(election.id) }
+        binding.electionRecyclerView.adapter = electionAdapter
+
+        binding.activityRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        activityAdapter = ActivityAdapter(mutableListOf())
+        binding.activityRecyclerView.adapter = activityAdapter
+
+        binding.caughtStudentRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        caughtStudentsAdapter = CaughtStudentAdapter(mutableListOf())
+        binding.caughtStudentRecycler.adapter = caughtStudentsAdapter
+    }
+
+    private fun fetchData() {
+        fetchElections()
+        fetchActivities()
+        fetchCaughtStudents()
+    }
+
     private fun fetchElections() {
         db.collection("elections")
             .get()
             .addOnSuccessListener { snapshot ->
-                if (snapshot.isEmpty) return@addOnSuccessListener
+                if (!isAdded || _binding == null || snapshot.isEmpty) return@addOnSuccessListener
 
                 electionList.clear()
                 for (doc in snapshot.documents) {
@@ -95,9 +99,6 @@ class DeanHomeFragment : Fragment() {
                 }
                 electionAdapter.updateList(electionList)
             }
-            .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
-            }
     }
 
     private fun fetchActivities() {
@@ -105,7 +106,7 @@ class DeanHomeFragment : Fragment() {
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { snapshot ->
-                if (snapshot.isEmpty) return@addOnSuccessListener
+                if (!isAdded || _binding == null || snapshot.isEmpty) return@addOnSuccessListener
 
                 notificationList.clear()
                 for (doc in snapshot.documents) {
@@ -114,16 +115,13 @@ class DeanHomeFragment : Fragment() {
                 }
                 activityAdapter.updateList(notificationList)
             }
-            .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
-            }
     }
 
     private fun fetchCaughtStudents() {
         db.collection("studentsCaught")
             .get()
             .addOnSuccessListener { snapshot ->
-                if (snapshot.isEmpty) return@addOnSuccessListener
+                if (!isAdded || _binding == null || snapshot.isEmpty) return@addOnSuccessListener
 
                 caughtStudentsList.clear()
                 for (doc in snapshot.documents) {
@@ -131,9 +129,6 @@ class DeanHomeFragment : Fragment() {
                     student?.let { caughtStudentsList.add(it) }
                 }
                 caughtStudentsAdapter.updateList(caughtStudentsList)
-            }
-            .addOnFailureListener { e ->
-                println("Firestore Error: ${e.message}")
             }
     }
 
@@ -153,6 +148,6 @@ class DeanHomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // ✅ Prevent Memory Leaks
     }
 }

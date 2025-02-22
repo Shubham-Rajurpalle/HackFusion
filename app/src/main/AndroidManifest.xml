@@ -28,6 +28,12 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
+            android:name=".FillCaughtDetails"
+            android:exported="false" />
+        <activity
+            android:name=".QRScannerctivity"
+            android:exported="false" />
+        <activity
             android:name=".complaint_form"
             android:exported="false" />
         <activity
@@ -37,7 +43,7 @@
             android:name=".ApplyLeaveActivity"
             android:exported="false" />
         <activity
-            android:name=".Student.DeanHomeActivity"
+            android:name=".DeanHomeActivity"
             android:exported="false" />
         <activity
             android:name=".FacultyHomeActivity"
@@ -66,6 +72,18 @@
         <activity
             android:name=".signIn"
             android:exported="false" />
+
+        <activity
+            android:name=".QRScannerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FacultyHomeFragment"
+            android:exported="false" />
+
+
+
+
         <activity
             android:name=".splashScreen"
             android:exported="true">

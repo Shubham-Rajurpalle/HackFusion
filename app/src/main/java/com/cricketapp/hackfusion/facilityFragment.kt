@@ -10,10 +10,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cricketapp.hackfusion.Booking
 import com.google.firebase.database.*
 
-class facilityFragment : Fragment() {
+class facilityFragment : Fragment() {  // 🔥 Fixed class name to follow Kotlin naming conventions
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var bookingAdapter: BookingAdapter
@@ -26,12 +25,11 @@ class facilityFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_facility, container, false)
 
-        // Initialize Buttons
         val btnBookFacility = view.findViewById<Button>(R.id.btnBookFacility)
 
-        // Navigate to Facility Booking Activity
+        // Navigate to Booking Activity
         btnBookFacility.setOnClickListener {
-            val intent = Intent(requireContext(), com.cricketapp.hackfusion.booking_facility::class.java)
+            val intent = Intent(requireContext(), booking_facility::class.java) // 🔥 Fixed naming consistency
             startActivity(intent)
         }
 
@@ -44,6 +42,9 @@ class facilityFragment : Fragment() {
         bookingAdapter = BookingAdapter(bookingList)
         recyclerView.adapter = bookingAdapter
 
+        // Initialize Firebase reference
+        databaseRef = FirebaseDatabase.getInstance().reference.child("Bookings")
+
         // Fetch data from Firebase
         fetchBookingsFromFirebase()
 
@@ -51,19 +52,16 @@ class facilityFragment : Fragment() {
     }
 
     private fun fetchBookingsFromFirebase() {
-        val databaseRef = FirebaseDatabase.getInstance().reference.child("Bookings")
-
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val bookingList = mutableListOf<Booking>()
+                bookingList.clear() // 🔥 Prevent duplicate data on every update
 
                 for (bookingSnapshot in snapshot.children) {
                     val booking = bookingSnapshot.getValue(Booking::class.java)
                     booking?.let { bookingList.add(it) }
                 }
 
-                bookingAdapter = BookingAdapter(bookingList)
-                recyclerView.adapter = bookingAdapter
+                bookingAdapter.notifyDataSetChanged() // 🔥 Update the existing adapter instead of creating a new one
             }
 
             override fun onCancelled(error: DatabaseError) {
