@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cricketapp.hackfusion.databinding.FragmentHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -58,7 +59,34 @@ class homeFragment : Fragment() {
             startActivity(Intent(requireContext(), profile_activity::class.java))
         }
 
+        fetchUserName()
+
         return view
+    }
+
+    private fun fetchUserName() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            _binding?.profilename?.text = "Hello User"
+            return
+        }
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val userName = document.getString("name") ?: "User"
+
+                    // **Check if `_binding` is null before updating UI**
+                    _binding?.profilename?.text = "Hello $userName"
+                    println("Username updated to: $userName")
+                } else {
+                    println("No user document found")
+                }
+            }
+            .addOnFailureListener { e ->
+                println("Error fetching user: ${e.message}")
+            }
     }
 
     private fun fetchElections() {

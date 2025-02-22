@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFF9C4">
+    android:background="#FFFFFF">
 
     <!-- Full-Width Seamless Yellow Header -->
     <TextView
@@ -36,10 +36,6 @@
             android:indeterminate="true"
             style="@android:style/Widget.Material.ProgressBar.Large" />
 
-        <!-- Public Category: Leave Applications -->
-
-        <!-- RecyclerView for Leave Applications -->
-
         <!-- Apply for Leave Button -->
         <Button
             android:id="@+id/btnApplyLeave"
@@ -53,10 +49,6 @@
             android:elevation="4dp"
             android:layout_marginTop="8dp"/>
 
-        <!-- Private Category: Other Permissions -->
-
-        <!-- RecyclerView for Other Approvals -->
-
         <!-- Apply for Approval Request Button -->
         <Button
             android:id="@+id/btnApplyApproval"
@@ -69,6 +61,28 @@
             android:padding="12dp"
             android:elevation="4dp"
             android:layout_marginTop="8dp"/>
+
+        <!-- Applications Heading -->
+        <TextView
+            android:id="@+id/tvApplications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Applications"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="start"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="8dp"/>
+
+        <!-- RecyclerView for Applications -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewApplications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:background="@android:color/white"
+            android:padding="8dp"/>
 
     </LinearLayout>
 

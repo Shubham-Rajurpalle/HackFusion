@@ -82,7 +82,7 @@
             <!-- Cancel Button -->
             <Button
                 android:id="@+id/btnCancel"
-                android:layout_width="@dimen/_80sdp"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="50dp"
                 android:text="Cancel"
                 android:layout_marginRight="@dimen/_20sdp"
@@ -92,7 +92,7 @@
             <!-- Submit Button -->
             <Button
                 android:id="@+id/btnSubmit"
-                android:layout_width="@dimen/_80sdp"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="50dp"
                 android:text="Submit"
                 android:textSize="16sp"

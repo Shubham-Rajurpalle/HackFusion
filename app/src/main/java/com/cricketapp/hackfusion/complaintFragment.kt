@@ -43,12 +43,6 @@ class complaintFragment : Fragment() {
             startActivity(intent)
         }
 
-        // ✅ Handle "Check Status" Button Click
-        binding.btnCheckComplaintStatus.setOnClickListener {
-            Toast.makeText(requireContext(), "Fetching latest complaints...", Toast.LENGTH_SHORT).show()
-            fetchComplaints() // Refresh data
-        }
-
         return view
     }
 

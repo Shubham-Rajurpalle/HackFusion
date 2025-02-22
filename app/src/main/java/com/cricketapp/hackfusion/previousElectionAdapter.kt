@@ -1,7 +1,6 @@
 package com.cricketapp.hackfusion
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +16,15 @@ class PreviousElectionsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(election: Election) {
-            binding.tvPreviousElectionName.text = election.electionName
-            binding.tvWinner.text = "Winner: ${election.winner ?: "Not Declared"}"
+            val winnerName = election.votes.maxByOrNull { it.value }?.key ?: "Not Declared"
 
-            // Log to check if button is being clicked
+            binding.tvPreviousElectionName.text = election.electionName
+            binding.tvWinner.text = "Winner: $winnerName"
+
             binding.btnViewResult.setOnClickListener {
                 val fragment = result_view()
                 val bundle = Bundle()
-                bundle.putParcelable("election", election) // Pass election data
+                bundle.putParcelable("election", election)
                 fragment.arguments = bundle
 
                 val activity = binding.root.context as AppCompatActivity
@@ -44,7 +44,7 @@ class PreviousElectionsAdapter(
     }
 
     override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
-        holder.bind(elections[holder.adapterPosition])
+        holder.bind(elections[position])
     }
 
     override fun getItemCount(): Int = elections.size

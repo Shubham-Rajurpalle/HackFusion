@@ -27,14 +27,7 @@ class facilityFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_facility, container, false)
 
         // Initialize Buttons
-        val btnCheckStatus = view.findViewById<Button>(R.id.btnCheckStatus)
         val btnBookFacility = view.findViewById<Button>(R.id.btnBookFacility)
-
-        // Navigate to Booking Status Activity
-        btnCheckStatus.setOnClickListener {
-            val intent = Intent(requireContext(), com.cricketapp.hackfusion.booking_facility::class.java)
-            startActivity(intent)
-        }
 
         // Navigate to Facility Booking Activity
         btnBookFacility.setOnClickListener {

@@ -18,42 +18,6 @@
         android:gravity="center"
         android:padding="10dp" />
 
-    <!-- Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp">
-
-        <Button
-            android:id="@+id/btnCheckComplaintStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Check Status"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#D32F2F"
-            android:padding="12dp"
-            android:elevation="4dp"
-            android:layout_marginEnd="8dp"/>
-
-        <Button
-            android:id="@+id/btnSubmitComplaint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Submit Complaint"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#C2185B"
-            android:padding="12dp"
-            android:elevation="4dp"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
-
-    <!-- Loading Animation (ProgressBar) -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -63,11 +27,24 @@
         android:visibility="gone"
         style="?android:attr/progressBarStyleLarge"/>
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComplaints"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="8dp"
         android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btnSubmitComplaint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Complaint"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#E70A12"
+        android:padding="12dp"
+        android:elevation="4dp"
+        android:layout_margin="16dp"/>
+
 </LinearLayout>

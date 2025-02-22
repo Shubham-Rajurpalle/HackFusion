@@ -14,7 +14,7 @@ class result_view : Fragment() {
     private var _binding: FragmentResultViewBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var election: Election  // Election data passed from previous fragment
+    private lateinit var election: Election
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +47,8 @@ class result_view : Fragment() {
 
         binding.btnBackToElections.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.navHost, ElectionFragment()) // Replace with your container ID
-                .addToBackStack(null) // Optional: Adds to back stack
+                .replace(R.id.navHost, ElectionFragment())
+                .addToBackStack(null)
                 .commit()
         }
 
