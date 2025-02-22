@@ -13,20 +13,20 @@ class CandidatesAdapter(
     private val votes: Map<String, Int>,
     private val hasVoted: Boolean,  // Receive voting status
     private val onVoteClick: (String) -> Unit
-) : RecyclerView.Adapter<CandidatesAdapter.CandidateViewHolder>() {
+) : RecyclerView.Adapter<com.cricketapp.hackfusion.CandidatesAdapter.CandidateViewHolder>() {
 
     inner class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvCandidateName: TextView = itemView.findViewById(R.id.tvCandidateName)
-        val btnVote: Button = itemView.findViewById(R.id.btnVote)
+        val tvCandidateName: TextView = itemView.findViewById(_root_ide_package_.com.cricketapp.hackfusion.R.id.tvCandidateName)
+        val btnVote: Button = itemView.findViewById(_root_ide_package_.com.cricketapp.hackfusion.R.id.btnVote)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): _root_ide_package_.com.cricketapp.hackfusion.CandidatesAdapter.CandidateViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_candidate, parent, false)
+            .inflate(_root_ide_package_.com.cricketapp.hackfusion.R.layout.item_candidate, parent, false)
         return CandidateViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: _root_ide_package_.com.cricketapp.hackfusion.CandidatesAdapter.CandidateViewHolder, position: Int) {
         val candidateName = candidates[position]
         holder.tvCandidateName.text = candidateName
 

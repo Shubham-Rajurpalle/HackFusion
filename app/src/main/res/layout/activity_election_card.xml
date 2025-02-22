@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_140sdp"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/_6sdp"
     app:cardCornerRadius="20dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardElevation="12dp"
+    app:cardBackgroundColor="#FFD34C"
+    app:cardElevation="4dp"
     app:strokeColor="@color/lightGrey"
     app:strokeWidth="2dp">
 
@@ -37,10 +37,10 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:chipCornerRadius="20dp"
-            app:chipStrokeWidth="1dp"
-            app:chipStrokeColor="@color/black"
             app:chipBackgroundColor="@color/green"
+            app:chipCornerRadius="20dp"
+            app:chipStrokeColor="@color/black"
+            app:chipStrokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Active" />
@@ -70,19 +70,19 @@
                 android:id="@+id/chipGroupCandidates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:singleLine="true"
-                app:chipSpacingHorizontal="8dp">
+                app:chipSpacingHorizontal="8dp"
+                app:singleLine="true">
 
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Candidate 1"
                     android:textColor="@color/black"
-                    app:chipCornerRadius="18dp"
-                    app:chipStrokeWidth="2dp"
-                    app:chipStrokeColor="@color/yellow"
                     app:chipBackgroundColor="@color/white"
-                    app:chipMinHeight="40dp"/>
+                    app:chipCornerRadius="18dp"
+                    app:chipMinHeight="40dp"
+                    app:chipStrokeColor="@color/yellow"
+                    app:chipStrokeWidth="2dp" />
 
 
             </com.google.android.material.chip.ChipGroup>
@@ -95,8 +95,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/darkGrey"
             android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/horizontalviewchip"
             app:layout_constraintTop_toBottomOf="@+id/horizontalviewchip"
             tools:text="Total Votes: 10,256" />
@@ -105,12 +105,13 @@
             android:id="@+id/timeRemaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/red"
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalviewchip"
+            app:layout_constraintTop_toBottomOf="@+id/tvTotalVotes"
             tools:text="Voting ends in: 02h 30m 15s" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

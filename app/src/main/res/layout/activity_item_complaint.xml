@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/editext_border"
+    android:elevation="4dp"
+    android:layout_margin="8dp">
+
+    <!-- Complaint Header (Yellow Background) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@color/yellow"
+        android:radius="8dp">
+
+        <TextView
+            android:id="@+id/tvSection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Section: Unknown"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:paddingBottom="4dp"/>
+    </LinearLayout>
+
+    <!-- Complaint Details -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details: "
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#555555"/>
+
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="N/A"
+            android:textSize="14sp"
+            android:textColor="#555555"/>
+    </LinearLayout>
+
+    <!-- Date & Time -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date  Time: "
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#555555"/>
+
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="N/A"
+            android:textSize="14sp"
+            android:textColor="#555555"/>
+    </LinearLayout>
+
+    <!-- Complaint Status -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"/>
+
+        <TextView
+            android:id="@+id/tvComplaintStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pending"
+            android:textSize="14sp"
+            android:textColor="#D32F2F"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</LinearLayout>

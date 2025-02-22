@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cricketapp.hackfusion.adapters.BookingAdapter
 import com.cricketapp.hackfusion.Booking
 import com.google.firebase.database.*
 
@@ -33,13 +32,13 @@ class facilityFragment : Fragment() {
 
         // Navigate to Booking Status Activity
         btnCheckStatus.setOnClickListener {
-            val intent = Intent(requireContext(), booking_facility::class.java)
+            val intent = Intent(requireContext(), com.cricketapp.hackfusion.booking_facility::class.java)
             startActivity(intent)
         }
 
         // Navigate to Facility Booking Activity
         btnBookFacility.setOnClickListener {
-            val intent = Intent(requireContext(), booking_facility::class.java)
+            val intent = Intent(requireContext(), com.cricketapp.hackfusion.booking_facility::class.java)
             startActivity(intent)
         }
 

@@ -1,6 +1,5 @@
 package com.cricketapp.hackfusion
 
-import Election
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -40,16 +39,17 @@ class LiveElectionsAdapter(
             val hasVoted = election.voters.containsKey(currentUserId)
 
             binding.rvCandidates.layoutManager = LinearLayoutManager(binding.root.context)
-            binding.rvCandidates.adapter = CandidatesAdapter(
-                election.candidates,
-                election.votes,
-                hasVoted, // Disable vote button if already voted
-                onVoteClick = { candidateName ->
-                    if (!hasVoted) {
-                        onVoteClick(election.id, candidateName)
+            binding.rvCandidates.adapter =
+                _root_ide_package_.com.cricketapp.hackfusion.CandidatesAdapter(
+                    election.candidates,
+                    election.votes,
+                    hasVoted, // Disable vote button if already voted
+                    onVoteClick = { candidateName ->
+                        if (!hasVoted) {
+                            onVoteClick(election.id, candidateName)
+                        }
                     }
-                }
-            )
+                )
 
             binding.btnViewResult.setOnClickListener {
                 val fragment = ViewResultFragment()

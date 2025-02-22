@@ -1,6 +1,6 @@
 package com.cricketapp.hackfusion
 
-data class Activity(
+data class Notification(
     val id: String = "",
     val title: String = "",
     val description: String = "",

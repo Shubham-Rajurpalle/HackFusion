@@ -1,4 +1,4 @@
-package com.cricketapp.hackfusion.adapters
+package com.cricketapp.hackfusion
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cricketapp.hackfusion.R
-import com.cricketapp.hackfusion.Booking
 
 class BookingAdapter(private val bookingList: List<Booking>) : RecyclerView.Adapter<BookingAdapter.BookingViewHolder>() {
 
@@ -28,15 +27,15 @@ class BookingAdapter(private val bookingList: List<Booking>) : RecyclerView.Adap
         val booking = bookingList[position]
         holder.facilityName.text = booking.facility
         holder.purpose.text = booking.purpose
-        holder.timeSlot.text = "Time: ${booking.startTime} - ${booking.endTime}"
+        holder.timeSlot.text = "${booking.startTime} - ${booking.endTime}"
         holder.userName.text = "Booked By: ${booking.bookedBy}"
 
         // Set approval status color
         if (booking.approved) {
-            holder.approvalStatus.text = "Status: Approved"
+            holder.approvalStatus.text = "Approved"
             holder.approvalStatus.setTextColor(Color.GREEN)
         } else {
-            holder.approvalStatus.text = "Status: Not Approved"
+            holder.approvalStatus.text = "Not Approved"
             holder.approvalStatus.setTextColor(Color.RED)
         }
     }

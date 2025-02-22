@@ -2,53 +2,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@color/white"
-    android:padding="20dp">
+    android:background="@android:color/white">
 
-    <EditText
-        android:id="@+id/etEmail"
+    <!-- Header Section -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:textColor="@color/black"
-        android:textColorHint="@color/grey"
-        android:inputType="textEmailAddress" />
+        android:layout_height="60dp"
+        android:background="#FFC107"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login to your account"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <!-- Main Content -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:textColor="@color/black"
-        android:textColorHint="@color/grey"
-        android:inputType="textPassword" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:backgroundTint="@color/red"
-        android:layout_marginTop="10dp" />
+        <!-- Email Input -->
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:layout_marginTop="30dp" />
 
-    <!-- New User? Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New User?"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center" />
+        <!-- Password Input -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:layout_marginTop="12dp" />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:backgroundTint="@color/blue"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="10dp" />
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_marginTop="20dp" />
 
+        <!-- Resend Verification Email Button -->
+
+        <!-- Progress Bar (Hidden Initially) -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <!-- New User? Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New User?"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
 </LinearLayout>

@@ -8,6 +8,5 @@ data class Booking(
     val approved: Boolean = false,  // Default to false
     val bookedBy: String = ""  // Name of the user
 ) {
-    // Required no-argument constructor for Firebase
     constructor() : this("", "", "", "", false, "")
 }

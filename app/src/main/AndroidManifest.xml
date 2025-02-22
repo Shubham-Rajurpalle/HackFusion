@@ -4,9 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -29,6 +28,27 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
+            android:name=".complaint_form"
+            android:exported="false" />
+        <activity
+            android:name=".ApplyApprovalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ApplyLeaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Student.DeanHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultyHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DoctorHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SecurityHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".profile_activity"
             android:exported="false" />
         <activity
@@ -48,9 +68,6 @@
             android:exported="false" />
         <activity
             android:name=".splashScreen"
-            android:exported="true" />
-        <activity
-            android:name=".home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,6 +75,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".home"
+            android:exported="true" />
     </application>
 
 </manifest>

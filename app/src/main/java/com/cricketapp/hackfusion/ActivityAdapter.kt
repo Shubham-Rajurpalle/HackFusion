@@ -4,23 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.cricketapp.hackfusion.R
 import com.cricketapp.hackfusion.databinding.ItemActivityBinding
 
 class ActivityAdapter(
-    private var activityList: List<Activity>
+    private var notificationList: List<Notification>
 ) : RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
 
     inner class ActivityViewHolder(private val binding: ItemActivityBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(activity: Activity) {
-            // Bind the text views
-            binding.titleText.text = activity.title
-            binding.descriptionText.text = activity.description
+        fun bind(notification: Notification) {
 
-            // Load the image using Glide
+            binding.titleText.text = notification.title
+            binding.descriptionText.text = notification.description
+
             Glide.with(binding.root.context)
-                .load(activity.imageUrl)
-                .error(R.drawable.activity_bg)  // Optional: error image in case of failure
-                .into(binding.backgroundImage)  // ImageView where image will be loaded
+                .load(notification.imageUrl)
+                .error(R.drawable.dummy_image)
+                .into(binding.backgroundImage)
         }
     }
 
@@ -30,13 +30,13 @@ class ActivityAdapter(
     }
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(activityList[position])
+        holder.bind(notificationList[position])
     }
 
-    override fun getItemCount() = activityList.size
+    override fun getItemCount() = notificationList.size
 
-    fun updateList(newList: List<Activity>) {
-        activityList = newList
+    fun updateList(newList: List<Notification>) {
+        notificationList = newList
         notifyDataSetChanged()
     }
 }

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class booking_facility : AppCompatActivity() {
@@ -70,7 +71,7 @@ class booking_facility : AppCompatActivity() {
                         }
 
                         // Create Booking Object
-                        val booking = Booking(
+                        val booking = com.cricketapp.hackfusion.Booking(
                             facility = selectedFacility,
                             purpose = purpose,
                             startTime = startTime,
@@ -108,20 +109,19 @@ class booking_facility : AppCompatActivity() {
             return
         }
 
-        val userRef = database.child("Users").child(userId)
+        val userRef = FirebaseFirestore.getInstance().collection("Users").document(userId)
 
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val name = snapshot.child("name").getValue(String::class.java) ?: "Unknown User"
+        userRef.get()
+            .addOnSuccessListener { document ->
+                val name = document.getString("name") ?: "Unknown User"
                 callback(name)
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("FirebaseError", "Error fetching user name: ${error.message}")
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreError", "Error fetching user name: ${exception.message}")
                 callback("Unknown User")
             }
-        })
     }
+
 
     // Function to check if the facility is already booked
     private fun isFacilityAvailable(facility: String, startTime: String, endTime: String, callback: (Boolean) -> Unit) {

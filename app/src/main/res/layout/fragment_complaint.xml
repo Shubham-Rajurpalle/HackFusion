@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="0dp">
+    android:background="@android:color/white">
 
-    <!-- Full-Width Yellow Strip for Complaint Window -->
+    <!-- Header -->
     <TextView
         android:id="@+id/tvHeaderComplaint"
         android:layout_width="match_parent"
@@ -19,17 +18,14 @@
         android:gravity="center"
         android:padding="10dp" />
 
-    <!-- Buttons Container -->
+    <!-- Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:padding="16dp">
 
-        <!-- Check Complaint Status Button -->
         <Button
             android:id="@+id/btnCheckComplaintStatus"
             android:layout_width="0dp"
@@ -43,7 +39,6 @@
             android:elevation="4dp"
             android:layout_marginEnd="8dp"/>
 
-        <!-- Submit a Complaint Button -->
         <Button
             android:id="@+id/btnSubmitComplaint"
             android:layout_width="0dp"
@@ -58,12 +53,21 @@
             android:layout_marginStart="8dp"/>
     </LinearLayout>
 
-    <!-- RecyclerView for Complaints -->
+    <!-- Loading Animation (ProgressBar) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"/>
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComplaints"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:visibility="visible"/> <!-- Initially visible -->
-
+        android:visibility="gone"/>
 </LinearLayout>

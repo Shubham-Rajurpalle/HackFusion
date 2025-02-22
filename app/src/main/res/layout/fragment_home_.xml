@@ -21,7 +21,8 @@
             android:src="@drawable/profile_empty"
             android:background="@drawable/circle_bg"
             android:padding="5dp"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,6 +32,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginStart="12dp"/>
+
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -56,14 +58,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:radius="12dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardElevation="0dp"
-            app:cardUseCompatPadding="true">
+                app:cardBackgroundColor="@android:color/white">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/electionRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/_5sdp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"/>
         </androidx.cardview.widget.CardView>
@@ -71,30 +70,47 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activities"
+            android:text="Notifications"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginStart="10dp"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:radius="12dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
+            app:cardBackgroundColor="@android:color/white">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activityRecyclerView"
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/_5sdp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"/>
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
-    </ScrollView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conduct Violations"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"/>
 
-    </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:radius="12dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/caughtStudentRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"/>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,102 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFF59D">  <!-- Light Yellow Background -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:layout_margin="8dp"
+        android:paddingBottom="24dp"
+        android:layout_gravity="center"
+        android:clipToPadding="false">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Approval Request"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
+
+        <!-- Name Field -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:paddingBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:focusable="false"
+            android:clickable="false"
+            android:textColorHint="#888888"
+            android:hint="Your Name"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Approval Details -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Approval Details"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:paddingBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etApprovalDetails"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:hint="Enter approval request details..."
+            android:textColorHint="#888888"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+
+            <!-- Cancel Button -->
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="50dp"
+                android:text="Cancel"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:textSize="16sp"
+                android:backgroundTint="#FBC02D" />
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="50dp"
+                android:text="Submit"
+                android:textSize="16sp"
+                android:backgroundTint="#FFEB3B" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

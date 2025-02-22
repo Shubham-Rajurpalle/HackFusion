@@ -24,15 +24,35 @@ class splashScreen : AppCompatActivity() {
         }
 
         // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
 
-        // Delay and navigate based on login status
         Handler(Looper.getMainLooper()).postDelayed({
-            val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-            val nextScreen = if (isLoggedIn) home::class.java else signIn::class.java
-
-            startActivity(Intent(this, nextScreen))
-            finish()
+            navigateBasedOnRole()
         }, 2000)
+    }
+
+    private fun navigateBasedOnRole() {
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+        val userRole = sharedPreferences.getString("USER_ROLE", "")
+
+        val nextScreen = if (isLoggedIn) {
+            when (userRole) {
+                "Student" -> home::class.java
+                "Security" -> SecurityHomeActivity::class.java
+                "Doctor" -> DoctorHomeActivity::class.java
+                "Faculty" -> FacultyHomeActivity::class.java
+                "Dean" -> DeanHomeActivity::class.java
+                else -> {
+                    startActivity(Intent(this, signIn::class.java))
+                    finish()
+                    return
+                }
+            }
+        } else {
+            signIn::class.java
+        }
+
+        startActivity(Intent(this, nextScreen))
+        finish()
     }
 }

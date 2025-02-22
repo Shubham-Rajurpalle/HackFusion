@@ -1,6 +1,5 @@
 package com.cricketapp.hackfusion
 
-import Election
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,9 +30,24 @@ class ViewResultFragment : Fragment() {
 
         binding.tvElectionName.text = election.electionName
 
+        // Calculate total votes
+        val totalVotes = election.votes.values.sum()
+        binding.tvTotalVotes.text = "Total Votes: $totalVotes"
+
+        // Check if election has ended
+        val currentTime = System.currentTimeMillis()
+        if (election.endTime < currentTime) {
+            // Determine winner
+            val winner = election.votes.maxByOrNull { it.value }?.key ?: "No winner"
+            binding.tvWinnerName.text = "Winner: $winner"
+        } else {
+            binding.tvWinnerName.text = "Election is Live"
+        }
+
         binding.rvCandidates.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCandidates.adapter = ResultsAdapter(election.votes)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

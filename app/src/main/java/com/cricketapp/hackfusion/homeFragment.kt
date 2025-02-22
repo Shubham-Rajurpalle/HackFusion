@@ -1,6 +1,5 @@
 package com.cricketapp.hackfusion
 
-import Election
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,11 +18,14 @@ class homeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var db: FirebaseFirestore
-    private lateinit var adapter: ElectionAdapter
+    private lateinit var electionAdapter: ElectionAdapter
     private val electionList = mutableListOf<Election>()
 
     private lateinit var activityAdapter: ActivityAdapter
-    private val activityList = mutableListOf<Activity>()
+    private val notificationList = mutableListOf<Notification>()
+
+    private lateinit var caughtStudentsAdapter: CaughtStudentAdapter
+    private val caughtStudentsList = mutableListOf<Student>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +36,23 @@ class homeFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
-        // Election RecyclerView setup (No changes)
+        // Election RecyclerView setup
         binding.electionRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        adapter = ElectionAdapter(emptyList()) { election -> openElectionFragment(election.id) }
-        binding.electionRecyclerView.adapter = adapter
+        electionAdapter = ElectionAdapter(mutableListOf()) { election -> openElectionFragment(election.id) }
+        binding.electionRecyclerView.adapter = electionAdapter
         fetchElections()
 
-        // Activity RecyclerView setup (New addition)
+        // Activity RecyclerView setup
         binding.activityRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        activityAdapter = ActivityAdapter(emptyList())
+        activityAdapter = ActivityAdapter(mutableListOf())
         binding.activityRecyclerView.adapter = activityAdapter
         fetchActivities()
+
+        // Caught Students RecyclerView setup
+        binding.caughtStudentRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        caughtStudentsAdapter = CaughtStudentAdapter(mutableListOf()) // New Adapter for caught students
+        binding.caughtStudentRecycler.adapter = caughtStudentsAdapter
+        fetchCaughtStudents()
 
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(requireContext(), profile_activity::class.java))
@@ -64,8 +72,7 @@ class homeFragment : Fragment() {
                     val election = doc.toObject(Election::class.java)?.copy(id = doc.id)
                     election?.let { electionList.add(it) }
                 }
-
-                adapter.updateList(electionList)
+                electionAdapter.updateList(electionList)
             }
             .addOnFailureListener { e ->
                 println("Firestore Error: ${e.message}")
@@ -79,13 +86,30 @@ class homeFragment : Fragment() {
             .addOnSuccessListener { snapshot ->
                 if (snapshot.isEmpty) return@addOnSuccessListener
 
-                activityList.clear()
+                notificationList.clear()
                 for (doc in snapshot.documents) {
-                    val activity = doc.toObject(Activity::class.java)?.copy(id = doc.id)
-                    activity?.let { activityList.add(it) }
+                    val notification = doc.toObject(Notification::class.java)?.copy(id = doc.id)
+                    notification?.let { notificationList.add(it) }
                 }
+                activityAdapter.updateList(notificationList)
+            }
+            .addOnFailureListener { e ->
+                println("Firestore Error: ${e.message}")
+            }
+    }
 
-                activityAdapter.updateList(activityList)
+    private fun fetchCaughtStudents() {
+        db.collection("studentsCaught")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.isEmpty) return@addOnSuccessListener
+
+                caughtStudentsList.clear()
+                for (doc in snapshot.documents) {
+                    val student = doc.toObject(Student::class.java)?.copy(id = doc.id)
+                    student?.let { caughtStudentsList.add(it) }
+                }
+                caughtStudentsAdapter.updateList(caughtStudentsList)
             }
             .addOnFailureListener { e ->
                 println("Firestore Error: ${e.message}")

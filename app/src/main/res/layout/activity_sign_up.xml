@@ -21,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Role Field -->
     <EditText
         android:id="@+id/etRole"
         android:layout_width="match_parent"
@@ -36,7 +35,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <!-- Full Name Field -->
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"
@@ -51,7 +49,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <!-- Phone Number Field -->
     <EditText
         android:id="@+id/etPhone"
         android:layout_width="match_parent"
@@ -66,7 +63,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <!-- Email Address Field -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
@@ -81,7 +77,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <!-- Parent Email Field -->
     <EditText
         android:id="@+id/etParentEmail"
         android:layout_width="match_parent"
@@ -96,8 +91,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
+    <EditText
+        android:id="@+id/regno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Registration No"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/etParentEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
 
-    <!-- Password Field -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -108,12 +116,11 @@
         android:textSize="16sp"
         android:padding="12dp"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/etParentEmail"
+        app:layout_constraintTop_toBottomOf="@id/regno"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <!-- Sign Up Button -->
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"

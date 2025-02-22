@@ -1,6 +1,5 @@
 package com.cricketapp.hackfusion
 
-import Election
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

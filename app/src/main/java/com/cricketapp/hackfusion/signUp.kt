@@ -1,7 +1,6 @@
 package com.cricketapp.hackfusion
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -21,21 +20,13 @@ class signUp : AppCompatActivity() {
     private lateinit var etParentEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnSubmit: Button
+    private lateinit var regno:EditText
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Check if the user is already logged in
-        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
-            navigateToHome()
-            return
-        }
-
         setContentView(R.layout.activity_sign_up)
 
         // Initialize Views
@@ -46,37 +37,29 @@ class signUp : AppCompatActivity() {
         etParentEmail = findViewById(R.id.etParentEmail)
         etPassword = findViewById(R.id.etPassword)
         btnSubmit = findViewById(R.id.btnSubmit)
+        regno=findViewById(R.id.regno)
+
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
         // Get QR Data from Intent
-        val qrData = intent.getStringExtra("QR_CODE_DATA")
-
-        if (!qrData.isNullOrEmpty()) {
+        val qrData = intent.getStringExtra("QR_CODE_DATA") ?: "{}"
+        if (qrData.isNotEmpty()) {
             try {
-                // ✅ Convert QR string to JSON
                 val jsonData = JSONObject(qrData)
+                etRole.setText(jsonData.optString("role", ""))
+                etName.setText(jsonData.optString("name", ""))
+                etPhone.setText(jsonData.optString("self_phone", ""))
+                etEmail.setText(jsonData.optString("self_mail", ""))
+                etParentEmail.setText(jsonData.optString("parent_mail", ""))
+                regno.setText((jsonData.optString("reg_no","")))
 
-                // ✅ Extract fields safely
-                val role = jsonData.optString("role", "").takeIf { it != "null" } ?: ""
-                val name = jsonData.optString("name", "").takeIf { it != "null" } ?: ""
-                val phone = jsonData.optString("self_phone", "").takeIf { it != "null" } ?: ""
-                val email = jsonData.optString("self_mail", "").takeIf { it != "null" } ?: ""
-                val parentEmail = jsonData.optString("parent_mail", "").takeIf { it != "null" } ?: ""
 
-                // ✅ Pre-fill EditText fields
-                etRole.setText(role)
-                etName.setText(name)
-                etPhone.setText(phone)
-                etEmail.setText(email)
-                etParentEmail.setText(parentEmail)
-
-                Log.d("SignUpActivity", "Auto-filled: Role=$role, Name=$name, Phone=$phone, Email=$email, ParentEmail=$parentEmail")
-
+                Log.d("SignUpActivity", "Auto-filled from QR: $jsonData")
             } catch (e: Exception) {
-                Log.e("SignUpActivity", "Error parsing QR code data", e)
+                Log.e("SignUpActivity", "Error parsing QR data", e)
                 Toast.makeText(this, "Invalid QR Code Format", Toast.LENGTH_LONG).show()
             }
         }
@@ -92,42 +75,45 @@ class signUp : AppCompatActivity() {
         val email = etEmail.text.toString().trim()
         val phone = etPhone.text.toString().trim()
         val role = etRole.text.toString().trim()
+        val regNo=regno.text.toString().trim()
+        val password = etPassword.text.toString().trim()
+        val qrData = intent.getStringExtra("QR_CODE_DATA") ?: "{}"
 
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || role.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || role.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        auth.createUserWithEmailAndPassword(email, phone) // Using phone as dummy password
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
 
-                    val user = hashMapOf("userId" to userId, "name" to name, "email" to email, "phone" to phone, "role" to role)
+                    val userData = hashMapOf(
+                        "name" to name,
+                        "email" to email,
+                        "role" to role,
+                        "phone" to phone,
+                        "qrData" to qrData,
+                        "regNo" to regNo,
+                        "isEmailVerified" to false  // Email verification required
+                    )
 
-                    db.collection("users").document(userId)
-                        .set(user)
+                    db.collection("users").document(userId).set(userData)
                         .addOnSuccessListener {
-                            // ✅ Save User Data in SharedPreferences
-                            val sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
-                            val editor = sharedPreferences.edit()
-                            editor.putString("name", name)
-                            editor.putString("email", email)
-                            editor.putString("phone", phone)
-                            editor.putString("role", role)
-                            editor.apply()
+                            Log.d("SignUpActivity", "User data stored in Firestore")
 
-                            Toast.makeText(this, "Registration Successful!", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this, home::class.java))
+                            Toast.makeText(this, "Sign-up successful! Please log in.", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this, signIn::class.java))
                             finish()
                         }
+                        .addOnFailureListener { e ->
+                            Log.e("SignUpActivity", "Error saving user data", e)
+                            Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "Registration Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }
-    }
-
-    private fun navigateToHome() {
-        val intent = Intent(this, home::class.java)
-        startActivity(intent)
-        finish()
     }
 }
