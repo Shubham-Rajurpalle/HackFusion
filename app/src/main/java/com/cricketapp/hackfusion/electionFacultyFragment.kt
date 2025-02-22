@@ -49,7 +49,7 @@ class electionFacultyFragment : Fragment() {
         binding.recyclerLiveElections.layoutManager = LinearLayoutManager(requireContext())
         liveAdapter = LiveElectionFacultyAdapter(liveElectionsList) { election ->
             // Handle view results
-            val fragment = ViewResultFragment()
+            val fragment = result_view()
             val bundle = Bundle()
             bundle.putParcelable("election", election) // Pass election data
             fragment.arguments = bundle

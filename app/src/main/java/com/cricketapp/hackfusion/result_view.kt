@@ -1,5 +1,6 @@
 package com.cricketapp.hackfusion
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cricketapp.hackfusion.databinding.FragmentResultViewBinding
 
-class ViewResultFragment : Fragment() {
+class result_view : Fragment() {
 
     private var _binding: FragmentResultViewBinding? = null
     private val binding get() = _binding!!
@@ -42,6 +43,13 @@ class ViewResultFragment : Fragment() {
             binding.tvWinnerName.text = "Winner: $winner"
         } else {
             binding.tvWinnerName.text = "Election is Live"
+        }
+
+        binding.btnBackToElections.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.navHost, ElectionFragment()) // Replace with your container ID
+                .addToBackStack(null) // Optional: Adds to back stack
+                .commit()
         }
 
         binding.rvCandidates.layoutManager = LinearLayoutManager(requireContext())

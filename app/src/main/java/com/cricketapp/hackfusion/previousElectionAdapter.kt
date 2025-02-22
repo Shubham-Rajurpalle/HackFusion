@@ -22,7 +22,7 @@ class PreviousElectionsAdapter(
 
             // Log to check if button is being clicked
             binding.btnViewResult.setOnClickListener {
-                val fragment = ViewResultFragment()
+                val fragment = result_view()
                 val bundle = Bundle()
                 bundle.putParcelable("election", election) // Pass election data
                 fragment.arguments = bundle

@@ -52,7 +52,7 @@ class LiveElectionsAdapter(
                 )
 
             binding.btnViewResult.setOnClickListener {
-                val fragment = ViewResultFragment()
+                val fragment = result_view()
                 val bundle = Bundle()
                 bundle.putParcelable("election", election) // Pass election data
                 fragment.arguments = bundle
