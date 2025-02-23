@@ -1,99 +1,82 @@
 package com.cricketapp.hackfusion
 
-import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.cricketapp.hackfusion.databinding.FragmentComplaintBinding
-import com.cricketapp.hackfusion.databinding.FragmentComplaintFacultyBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 
-class ComplaintApprovalFragment : Fragment() {
-    private var _binding: FragmentComplaintBinding? = null
-    private val binding get() = _binding!!
 
-    private lateinit var complaintAdapter: ComplaintAdapter
-    private val complaintList = ArrayList<Complaint>()
-    private lateinit var databaseRef: DatabaseReference
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentComplaintBinding.inflate(inflater, container, false)
-        return binding.root
+class ComplaintApprovalAdapter(
+    private var complaints: List<Complaint>, // Added type parameter
+    private val isDean: Boolean,
+    private val onApprovalAction: (Complaint, Boolean) -> Unit
+) : RecyclerView.Adapter<ComplaintApprovalAdapter.ComplaintViewHolder>() { // Added ViewHolder type
+
+    class ComplaintViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvComplaintStatus: TextView = view.findViewById(R.id.tvComplaintStatus)
+        val adminButtons: LinearLayout = view.findViewById(R.id.adminButtons)
+        val btnApprove: Button = view.findViewById(R.id.btnApprove)
+        val btnReject: Button = view.findViewById(R.id.btnReject)
+        val tvSection: TextView = view.findViewById(R.id.tvSection)
+        val tvDetails: TextView = view.findViewById(R.id.tvDetails)
+        val tvDateTime: TextView = view.findViewById(R.id.tvDateTime)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        fetchComplaints()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_item_complaint, parent, false)
+        return ComplaintViewHolder(view)
     }
 
-    private fun setupRecyclerView() {
-        complaintAdapter = ComplaintAdapter(
-            complaints = complaintList,
-            isDean = true
-        ) { complaint, newStatus ->
-            updateComplaintStatus(complaint, newStatus)
+    override fun onBindViewHolder(holder: ComplaintViewHolder, position: Int) {
+        val complaint = complaints[position]
+
+        holder.apply {
+            tvSection.text = "Section: ${complaint.section}"
+            tvDetails.text = "Details: ${complaint.details}"
+            tvDateTime.text = "Date & Time: ${complaint.timestamp}"
         }
 
-        binding.recyclerViewComplaints.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = complaintAdapter
+        // Update status and UI based on complaint state
+        updateComplaintStatus(holder, complaint)
+
+        // Show/hide admin buttons based on isDean and complaint status
+        holder.adminButtons.visibility = if (isDean && !complaint.approved) View.VISIBLE else View.GONE
+
+        if (isDean && !complaint.approved) {
+            holder.btnApprove.setOnClickListener {
+                onApprovalAction(complaint, true)
+            }
+
+            holder.btnReject.setOnClickListener {
+                onApprovalAction(complaint, false)
+            }
         }
     }
 
-    private fun fetchComplaints() {
-        databaseRef = FirebaseDatabase.getInstance().reference.child("Complaints")
+    private fun updateComplaintStatus(holder: ComplaintViewHolder, complaint: Complaint) {
+        val (text, color) = if (complaint.approved) {
+            "Resolved" to android.R.color.holo_green_dark
+        } else {
+            "Pending" to android.R.color.holo_red_dark
+        }
 
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                complaintList.clear()
-                for (complaintSnapshot in snapshot.children) {
-                    val complaint = complaintSnapshot.getValue(Complaint::class.java)
-                    complaint?.let {
-                        it.id = complaintSnapshot.key ?: ""
-                        complaintList.add(it)
-                    }
-                }
-                complaintAdapter.updateList(complaintList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to load complaints", Toast.LENGTH_SHORT).show()
-            }
-        })
+        holder.tvComplaintStatus.apply {
+            this.text = text
+            setTextColor(context.getColor(color))
+        }
     }
 
-    private fun updateComplaintStatus(complaint: Complaint, newStatus: String) {
-        val complaintRef = databaseRef.child(complaint.id)
+    override fun getItemCount() = complaints.size
 
-        complaintRef.child("status").setValue(newStatus)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    context,
-                    "Complaint $newStatus successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    context,
-                    "Update failed: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    fun updateComplaints(newComplaints: List<Complaint>) {
+        complaints = newComplaints
+        notifyDataSetChanged()
+        Log.d("ComplaintAdapter", "Adapter updated with ${newComplaints.size} complaints")
     }
 }

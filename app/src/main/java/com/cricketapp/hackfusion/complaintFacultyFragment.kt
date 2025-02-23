@@ -1,22 +1,29 @@
 package com.cricketapp.hackfusion
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cricketapp.hackfusion.databinding.FragmentComplaintBinding
 import com.cricketapp.hackfusion.databinding.FragmentComplaintFacultyBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class complaintFacultyFragment : Fragment() {
+
+class ComplaintFacultyFragment : Fragment() {
     private var _binding: FragmentComplaintFacultyBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var complaintAdapter: ComplaintAdapter
+    private lateinit var complaintAdapter: ComplaintApprovalAdapter
+    private val complaintList = ArrayList<Complaint>()
     private lateinit var databaseRef: DatabaseReference
-    private val complaintList = mutableListOf<Complaint>()
+    private var isDean: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,57 +31,130 @@ class complaintFacultyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentComplaintFacultyBinding.inflate(inflater, container, false)
+
+        // Initialize database reference early
+        databaseRef = FirebaseDatabase.getInstance().reference.child("Complaints")
+
+        // Setup RecyclerView
+        setupRecyclerView()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        fetchComplaints()
+        // Fetch data after view is created
+        fetchComplaintsFromFirebase()
     }
 
     private fun setupRecyclerView() {
-        complaintAdapter = ComplaintAdapter(
-            complaints = complaintList,
-            isDean = false
-        )
+        Log.d("ComplaintFragment", "Setting up RecyclerView")
 
         binding.recyclerViewComplaints.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+
+            // Initialize adapter with empty list
+            complaintAdapter = ComplaintApprovalAdapter(
+                complaints = complaintList,
+                isDean = isDean
+            ) { complaint, isApproved ->
+                updateComplaintStatus(complaint, isApproved)
+            }
+
             adapter = complaintAdapter
+
+            // Add item decoration for better visibility
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
+        Log.d("ComplaintFragment", "RecyclerView setup completed")
     }
 
-    private fun fetchComplaints() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.recyclerViewComplaints.visibility = View.GONE
+    private fun fetchComplaintsFromFirebase() {
+        Log.d("ComplaintFragment", "Starting to fetch complaints")
 
-        databaseRef = FirebaseDatabase.getInstance().reference.child("Complaints")
+        // Verify database reference
+        if (!::databaseRef.isInitialized) {
+            Log.e("ComplaintFragment", "Database reference not initialized")
+            return
+        }
+
+        // Debug log for database path
+        Log.d("ComplaintFragment", "Database path: ${databaseRef.path}")
 
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                complaintList.clear()
-                for (complaintSnapshot in snapshot.children) {
-                    val complaint = complaintSnapshot.getValue(Complaint::class.java)
-                    complaint?.let {
-                        complaintList.add(it)
-                    }
-                }
-                complaintAdapter.updateList(complaintList)
+                try {
+                    Log.d("ComplaintFragment", "Data snapshot received: ${snapshot.exists()}")
+                    Log.d("ComplaintFragment", "Children count: ${snapshot.childrenCount}")
 
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerViewComplaints.visibility = View.VISIBLE
+                    complaintList.clear()
+
+                    for (complaintSnapshot in snapshot.children) {
+                        Log.d("ComplaintFragment", "Processing complaint: ${complaintSnapshot.key}")
+
+                        try {
+                            val complaint = complaintSnapshot.getValue(Complaint::class.java)
+                            Log.d("ComplaintFragment", "Complaint data: $complaint")
+
+                            complaint?.let {
+                                it.id = complaintSnapshot.key ?: return@let
+                                complaintList.add(it)
+                                Log.d("ComplaintFragment", "Added complaint: ${it.id}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e("ComplaintFragment", "Error parsing complaint", e)
+                            // Print the raw data for debugging
+                            Log.d("ComplaintFragment", "Raw data: ${complaintSnapshot.value}")
+                        }
+                    }
+
+                    Log.d("ComplaintFragment", "Final complaints list size: ${complaintList.size}")
+
+                    // Update UI on main thread
+                    activity?.runOnUiThread {
+                        complaintAdapter.updateComplaints(complaintList)
+
+                        // Update visibility of RecyclerView and empty state
+                        binding.recyclerViewComplaints.visibility =
+                            if (complaintList.isEmpty()) View.GONE else View.VISIBLE
+                        binding.tvHeaderComplaint?.visibility =
+                            if (complaintList.isEmpty()) View.VISIBLE else View.GONE
+                    }
+
+                } catch (e: Exception) {
+                    Log.e("ComplaintFragment", "Error processing complaints", e)
+                    showToast("Error loading complaints: ${e.message}")
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    context,
-                    "Failed to load complaints: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                binding.progressBar.visibility = View.GONE
+                Log.e("ComplaintFragment", "Database error: ${error.message}", error.toException())
+                showToast("Failed to load complaints: ${error.message}")
             }
         })
+    }
+
+
+    private fun updateComplaintStatus(complaint: Complaint, isApproved: Boolean) {
+        val complaintRef = databaseRef.child(complaint.id)
+
+        complaintRef.updateChildren(mapOf("approved" to isApproved))
+            .addOnSuccessListener {
+                val status = if (isApproved) "resolved" else "rejected"
+                showToast("Complaint $status successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.e("ComplaintFragment", "Error updating complaint", e)
+                showToast("Update failed: ${e.message}")
+            }
+    }
+
+    private fun showToast(message: String) {
+        activity?.runOnUiThread {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

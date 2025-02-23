@@ -1,66 +1,39 @@
 package com.cricketapp.hackfusion
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.cricketapp.hackfusion.databinding.ActivityItemComplaintBinding
 
-class ComplaintAdapter(
-    private var complaints: List<Complaint>,
-    private val isDean: Boolean = false,
-    private val onStatusUpdate: ((Complaint, String) -> Unit)? = null
-) : RecyclerView.Adapter<ComplaintAdapter.ComplaintViewHolder>() {
+class ComplaintAdapter(private var complaintList: List<Complaint>) :
+    RecyclerView.Adapter<ComplaintAdapter.ComplaintViewHolder>() {
 
-    class ComplaintViewHolder(val binding: ActivityItemComplaintBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class ComplaintViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvSection: TextView = itemView.findViewById(R.id.tvSection)
+        val tvDetails: TextView = itemView.findViewById(R.id.tvDetails)
+        val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplaintViewHolder {
-        val binding = ActivityItemComplaintBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ComplaintViewHolder(binding)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_item_complaint, parent, false)  // ✅ Use the correct item layout
+        return ComplaintViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ComplaintViewHolder, position: Int) {
-        val complaint = complaints[position]
-
-        with(holder.binding) {
-            tvSection.text = "Section: ${complaint.section}"
-            tvDetails.text = complaint.details
-            tvDateTime.text = complaint.timestamp
-            tvComplaintStatus.text = complaint.status
-
-            // Set status color
-            val statusColor = when(complaint.status) {
-                "Accepted" -> Color.GREEN
-                "Rejected" -> Color.RED
-                else -> Color.parseColor("#FFA500") // Orange for pending
-            }
-            tvComplaintStatus.setTextColor(statusColor)
-
-            // Show/hide admin buttons based on role and current status
-            adminButtons.visibility = if (isDean && complaint.status == "Pending")
-                View.VISIBLE else View.GONE
-
-            btnApprove.setOnClickListener {
-                onStatusUpdate?.invoke(complaint, "Accepted")
-            }
-
-            btnReject.setOnClickListener {
-                onStatusUpdate?.invoke(complaint, "Rejected")
-            }
-        }
+        val complaint = complaintList[position]
+        holder.tvSection.text = "Section: ${complaint.section}"
+        holder.tvDetails.text = "Details: ${complaint.details}"
+        holder.tvDateTime.text = "Date & Time: ${complaint.timestamp}"  // ✅ Corrected field name
     }
 
-    override fun getItemCount() = complaints.size
+    override fun getItemCount(): Int {
+        return complaintList.size
+    }
 
-    fun updateList(newComplaints: List<Complaint>) {
-        complaints = newComplaints
+    fun updateList(newList: List<Complaint>) {
+        complaintList = newList
         notifyDataSetChanged()
     }
 }
