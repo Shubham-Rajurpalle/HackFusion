@@ -83,7 +83,7 @@ class FacultyHomeActivity : AppCompatActivity() {
                 R.id.electionIcon -> switchFragment(electionFacultyFragment(), "com.cricketapp.hackfusion.com.cricketapp.hackfusion.Election")
                 R.id.facilityIcon -> switchFragment(facilityFragment(), "Facility")
                 R.id.complaintIcon -> switchFragment(complaintFragment(), "Complaint")
-                R.id.budgetIcon -> switchFragment(budgetFacultyFragment(), "Budget")
+                R.id.budgetIcon -> switchFragment(budgetFragment(), "Budget")
                 else -> false
             }
             true

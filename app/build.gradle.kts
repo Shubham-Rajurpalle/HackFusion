@@ -123,4 +123,18 @@ dependencies {
 
     implementation ("com.google.mlkit:barcode-scanning:17.2.0")
     implementation ("com.google.android.gms:play-services-mlkit-barcode-scanning:18.2.0")
+
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation ("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation ("com.google.android.gms:play-services-mlkit-barcode-scanning:18.2.0")
+
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation ("com.google.android.gms:play-services-mlkit-barcode-scanning:18.0.1")
+
+    implementation ("com.sun.mail:android-mail:1.6.2")
+    implementation ("com.sun.mail:android-activation:1.6.2")
 }

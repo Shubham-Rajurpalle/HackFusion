@@ -9,7 +9,7 @@
     <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_60sdp"
         android:background="#FFD700"
         android:gravity="center"
         android:orientation="vertical"
@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:padding="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <!-- Name -->

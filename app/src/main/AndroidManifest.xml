@@ -28,6 +28,12 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
+            android:name=".DoctorFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QRScanForDoctor"
+            android:exported="false" />
+        <activity
             android:name=".CreateNotificationActivity"
             android:exported="false" />
         <activity

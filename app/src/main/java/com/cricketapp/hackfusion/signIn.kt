@@ -83,7 +83,7 @@ class signIn : AppCompatActivity() {
                     Log.d("SIGN_IN", "Firestore Data: ${document.data}")  // Log all data
 
                     if (role != null) {
-                        saveUserRole(role)  // ✅ Store in SharedPreferences
+                        saveUserRole(role)
 
                         val intent = when (role) {
                             "Student" -> Intent(this, home::class.java)
