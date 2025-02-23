@@ -32,10 +32,8 @@ class ComplaintFacultyFragment : Fragment() {
     ): View {
         _binding = FragmentComplaintFacultyBinding.inflate(inflater, container, false)
 
-        // Initialize database reference early
         databaseRef = FirebaseDatabase.getInstance().reference.child("Complaints")
 
-        // Setup RecyclerView
         setupRecyclerView()
 
         return binding.root
@@ -64,7 +62,6 @@ class ComplaintFacultyFragment : Fragment() {
 
             adapter = complaintAdapter
 
-            // Add item decoration for better visibility
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
@@ -74,13 +71,11 @@ class ComplaintFacultyFragment : Fragment() {
     private fun fetchComplaintsFromFirebase() {
         Log.d("ComplaintFragment", "Starting to fetch complaints")
 
-        // Verify database reference
         if (!::databaseRef.isInitialized) {
             Log.e("ComplaintFragment", "Database reference not initialized")
             return
         }
 
-        // Debug log for database path
         Log.d("ComplaintFragment", "Database path: ${databaseRef.path}")
 
         databaseRef.addValueEventListener(object : ValueEventListener {
