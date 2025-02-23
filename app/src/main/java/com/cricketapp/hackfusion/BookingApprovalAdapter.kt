@@ -1,29 +1,30 @@
 package com.cricketapp.hackfusion
 
-import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class BookingApprovalAdapter(
-    private val bookings: List<Booking>,
-    private val isDean: Boolean, // Check if the user is a Dean
-    private val onStatusUpdate: (Booking, Boolean) -> Unit
+    private var bookings: List<Booking>,
+    private val isDean: Boolean,
+    private val onApprovalAction: (Booking, Boolean) -> Unit
 ) : RecyclerView.Adapter<BookingApprovalAdapter.BookingViewHolder>() {
 
-    inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvUserName: TextView = itemView.findViewById(R.id.tvUserName)
-        val tvFacilityName: TextView = itemView.findViewById(R.id.tvFacilityName)
-        val tvPurpose: TextView = itemView.findViewById(R.id.tvPurpose)
-        val tvTimeSlot: TextView = itemView.findViewById(R.id.tvTimeSlot)
-        val tvApprovalStatus: TextView = itemView.findViewById(R.id.tvApprovalStatus)
-        val adminButtons: LinearLayout = itemView.findViewById(R.id.adminButtons)
-        val btnApprove: Button = itemView.findViewById(R.id.btnApprove)
-        val btnReject: Button = itemView.findViewById(R.id.btnReject)
+    class BookingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvUserName: TextView = view.findViewById(R.id.tvUserName)
+        val tvFacilityName: TextView = view.findViewById(R.id.tvFacilityName)
+        val tvPurpose: TextView = view.findViewById(R.id.tvPurpose)
+        val tvTimeSlot: TextView = view.findViewById(R.id.tvTimeSlot)
+        val tvApprovalStatus: TextView = view.findViewById(R.id.tvApprovalStatus)
+        val adminButtons: LinearLayout = view.findViewById(R.id.adminButtons)
+        val btnApprove: Button = view.findViewById(R.id.btnApprove)
+        val btnReject: Button = view.findViewById(R.id.btnReject)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingViewHolder {
@@ -34,31 +35,66 @@ class BookingApprovalAdapter(
 
     override fun onBindViewHolder(holder: BookingViewHolder, position: Int) {
         val booking = bookings[position]
+        val context = holder.itemView.context
 
+        // Set basic booking information
         holder.tvUserName.text = "Booked By: ${booking.bookedBy}"
         holder.tvFacilityName.text = booking.facility
         holder.tvPurpose.text = booking.purpose
         holder.tvTimeSlot.text = "${booking.startTime} - ${booking.endTime}"
-        holder.tvApprovalStatus.text = if (booking.approved) "Approved" else "Not Approved"
-        holder.tvApprovalStatus.setTextColor(if (booking.approved) Color.GREEN else Color.RED)
 
-        // 🔥 FIX: Make admin buttons visible if the user is a Dean
-        holder.adminButtons.visibility = if (isDean) View.VISIBLE else View.GONE
+        // Update status and UI based on booking state
+        updateBookingStatus(holder, booking)
 
-        // 🔥 FIX: Ensure buttons are enabled & clickable
-        holder.btnApprove.isEnabled = isDean
-        holder.btnReject.isEnabled = isDean
+        // Show/hide admin buttons based on isDean and booking status
+        if (isDean && !booking.approved) {
+            holder.adminButtons.visibility = View.VISIBLE
 
-        // Handle Approve Button Click
-        holder.btnApprove.setOnClickListener {
-            if (isDean) onStatusUpdate(booking, true)
-        }
+            holder.btnApprove.setOnClickListener {
+                onApprovalAction(booking, true)
+                // Update the local booking object
+                booking.approved = true
+                // Update the UI immediately
+                updateBookingStatus(holder, booking)
+                // Hide the buttons
+                holder.adminButtons.visibility = View.GONE
+            }
 
-        // Handle Reject Button Click
-        holder.btnReject.setOnClickListener {
-            if (isDean) onStatusUpdate(booking, false)
+            holder.btnReject.setOnClickListener {
+                onApprovalAction(booking, false)
+                // Update the local booking object to show rejected state
+                booking.approved = false
+                // Update the UI immediately
+                updateBookingStatus(holder, booking)
+                // Hide the buttons after rejection
+                holder.adminButtons.visibility = View.GONE
+            }
+        } else {
+            holder.adminButtons.visibility = View.GONE
         }
     }
 
-    override fun getItemCount(): Int = bookings.size
+    private fun updateBookingStatus(holder: BookingViewHolder, booking: Booking) {
+        when {
+            booking.approved -> {
+                holder.tvApprovalStatus.text = "Approved"
+                holder.tvApprovalStatus.setTextColor(holder.itemView.context.getColor(android.R.color.holo_green_dark))
+                holder.adminButtons.visibility = View.GONE
+            }
+            else -> {
+                holder.tvApprovalStatus.text = "Pending"
+                holder.tvApprovalStatus.setTextColor(holder.itemView.context.getColor(android.R.color.holo_red_dark))
+                // Only show buttons if it's a dean and the booking is pending
+                holder.adminButtons.visibility = if (isDean) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
+    override fun getItemCount() = bookings.size
+
+    // Add method to update the bookings list
+    fun updateBookings(newBookings: List<Booking>) {
+        bookings = newBookings
+        notifyDataSetChanged()
+    }
 }

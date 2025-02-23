@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date  Time: "
+            android:text="Date Time: "
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="#555555"/>
@@ -100,4 +100,31 @@
             android:textColor="#D32F2F"
             android:textStyle="bold"/>
     </LinearLayout>
+
+    <!-- Buttons for Approval (Initially Hidden) -->
+    <LinearLayout
+        android:id="@+id/adminButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnApprove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approve"
+            android:backgroundTint="@color/green"/>
+
+        <Button
+            android:id="@+id/btnReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:backgroundTint="@color/red"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
 </LinearLayout>

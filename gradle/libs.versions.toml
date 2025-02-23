@@ -15,6 +15,7 @@ cardview = "1.0.0"
 firebaseAuthKtx = "23.2.0"
 firebaseDatabaseKtx = "21.0.0"
 fragment = "1.8.6"
+media3CommonKtx = "1.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +32,7 @@ androidx-cardview = { group = "androidx.cardview", name = "cardview", version.re
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

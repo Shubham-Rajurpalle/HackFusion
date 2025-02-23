@@ -48,6 +48,14 @@ class DeanHomeFragment : Fragment() {
             startActivity(Intent(requireContext(), profile_activity::class.java))
         }
 
+        binding.createElectionBtn.setOnClickListener {
+            startActivity(Intent(requireContext(),CreateElectionActivity::class.java))
+        }
+
+        binding.createNotification.setOnClickListener {
+            startActivity(Intent(requireContext(),CreateNotificationActivity::class.java))
+        }
+
         fetchUserName() // ✅ Calling AFTER View is created
     }
 

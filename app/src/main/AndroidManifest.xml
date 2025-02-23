@@ -28,6 +28,12 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
+            android:name=".CreateNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateElectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".FillCaughtDetails"
             android:exported="false" />
         <activity
@@ -72,18 +78,12 @@
         <activity
             android:name=".signIn"
             android:exported="false" />
-
         <activity
             android:name=".QRScannerActivity"
             android:exported="false" />
-
         <activity
             android:name=".FacultyHomeFragment"
             android:exported="false" />
-
-
-
-
         <activity
             android:name=".splashScreen"
             android:exported="true">

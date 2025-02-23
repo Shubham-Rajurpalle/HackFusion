@@ -1,8 +1,9 @@
 package com.cricketapp.hackfusion
 
 data class Complaint(
-    val id: String = "",
-    val section: String = "",  // Ensure 'section' is defined
+    var id: String = "",
+    val section: String = "",
     val details: String = "",
-    val timestamp: String = ""
+    val timestamp: String = "",
+    var status: String = "Pending"  // "Pending", "Accepted", or "Rejected"
 )

@@ -7,23 +7,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cricketapp.hackfusion.databinding.FragmentComplaintBinding
 import com.cricketapp.hackfusion.databinding.FragmentComplaintFacultyBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class complaintFacultyFragment : Fragment() {
-    private var _binding: FragmentComplaintFacultyBinding? = null
+class ComplaintApprovalFragment : Fragment() {
+    private var _binding: FragmentComplaintBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var complaintAdapter: ComplaintAdapter
+    private val complaintList = ArrayList<Complaint>()
     private lateinit var databaseRef: DatabaseReference
-    private val complaintList = mutableListOf<Complaint>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentComplaintFacultyBinding.inflate(inflater, container, false)
+        _binding = FragmentComplaintBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,8 +39,10 @@ class complaintFacultyFragment : Fragment() {
     private fun setupRecyclerView() {
         complaintAdapter = ComplaintAdapter(
             complaints = complaintList,
-            isDean = false
-        )
+            isDean = true
+        ) { complaint, newStatus ->
+            updateComplaintStatus(complaint, newStatus)
+        }
 
         binding.recyclerViewComplaints.apply {
             layoutManager = LinearLayoutManager(context)
@@ -46,9 +51,6 @@ class complaintFacultyFragment : Fragment() {
     }
 
     private fun fetchComplaints() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.recyclerViewComplaints.visibility = View.GONE
-
         databaseRef = FirebaseDatabase.getInstance().reference.child("Complaints")
 
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -57,24 +59,37 @@ class complaintFacultyFragment : Fragment() {
                 for (complaintSnapshot in snapshot.children) {
                     val complaint = complaintSnapshot.getValue(Complaint::class.java)
                     complaint?.let {
+                        it.id = complaintSnapshot.key ?: ""
                         complaintList.add(it)
                     }
                 }
                 complaintAdapter.updateList(complaintList)
-
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerViewComplaints.visibility = View.VISIBLE
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    context,
-                    "Failed to load complaints: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                binding.progressBar.visibility = View.GONE
+                Toast.makeText(context, "Failed to load complaints", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun updateComplaintStatus(complaint: Complaint, newStatus: String) {
+        val complaintRef = databaseRef.child(complaint.id)
+
+        complaintRef.child("status").setValue(newStatus)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    context,
+                    "Complaint $newStatus successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    context,
+                    "Update failed: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     override fun onDestroyView() {

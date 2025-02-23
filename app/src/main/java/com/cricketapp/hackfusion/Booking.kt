@@ -6,7 +6,7 @@ data class Booking(
     val purpose: String = "",
     val startTime: String = "",
     val endTime: String = "",
-    val approved: Boolean = false,
+    var approved: Boolean = false,
     val bookedBy: String = ""
 ) {
     constructor() : this("", "", "", "", "", false, "")
