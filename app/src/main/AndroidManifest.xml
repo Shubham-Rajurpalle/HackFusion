@@ -28,76 +28,76 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31" >
         <activity
-            android:name=".SecurityQrScan"
+            android:name=".QrScanDoctorSecurity.SecurityQrScan"
             android:exported="false" />
         <activity
-            android:name=".Security_Qr_Code_Layout"
+            android:name=".QrScanDoctorSecurity.Security_Qr_Code_Layout"
             android:exported="false" />
         <activity
-            android:name=".DoctorFormActivity"
+            android:name=".QrScanDoctorSecurity.DoctorFormActivity"
             android:exported="false" />
         <activity
-            android:name=".QRScanForDoctor"
+            android:name=".QrScanDoctorSecurity.QRScanForDoctor"
             android:exported="false" />
         <activity
-            android:name=".CreateNotificationActivity"
+            android:name=".Notification.CreateNotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateElectionActivity"
+            android:name=".Election.CreateElectionActivity"
             android:exported="false" />
         <activity
-            android:name=".FillCaughtDetails"
+            android:name=".ConductVoilate.FillCaughtDetails"
             android:exported="false" />
         <activity
             android:name=".QRScannerctivity"
             android:exported="false" />
         <activity
-            android:name=".complaint_form"
+            android:name=".Complaint.complaint_form"
             android:exported="false" />
         <activity
-            android:name=".ApplyApprovalActivity"
+            android:name=".Application.ApplyApprovalActivity"
             android:exported="false" />
         <activity
-            android:name=".ApplyLeaveActivity"
+            android:name=".Application.ApplyLeaveActivity"
             android:exported="false" />
         <activity
-            android:name=".DeanHomeActivity"
+            android:name=".Home.DeanHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".FacultyHomeActivity"
+            android:name=".Home.FacultyHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".DoctorHomeActivity"
+            android:name=".Home.DoctorHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SecurityHomeActivity"
+            android:name=".Home.SecurityHomeActivity"
             android:exported="false" />
         <activity
             android:name=".profile_activity"
             android:exported="false" />
         <activity
-            android:name=".facilityStatus"
+            android:name=".Booking.facilityStatus"
             android:exported="false" />
         <activity
-            android:name=".booking_facility"
+            android:name=".Booking.booking_facility"
             android:exported="false" />
         <activity
-            android:name=".qrScanner"
+            android:name=".QrScanDoctorSecurity.qrScanner"
             android:exported="false" />
         <activity
-            android:name=".signUp"
+            android:name=".LogInSignIn.signUp"
             android:exported="false" />
         <activity
-            android:name=".signIn"
+            android:name=".LogInSignIn.signIn"
             android:exported="false" />
         <activity
-            android:name=".QRScannerActivity"
+            android:name=".QrScanDoctorSecurity.QRScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".FacultyHomeFragment"
+            android:name=".Home.FacultyHomeFragment"
             android:exported="false" />
         <activity
-            android:name=".splashScreen"
+            android:name=".LogInSignIn.splashScreen"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -106,7 +106,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".home"
+            android:name=".Home.home"
             android:exported="true" />
     </application>
 

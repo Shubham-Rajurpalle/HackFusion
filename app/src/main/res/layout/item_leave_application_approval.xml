@@ -4,23 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp"
-    android:padding="12dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="12dp">
+        android:padding="16dp">
 
-        <!-- Header Section with Student Name & Status -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="6dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvStudentName"
@@ -29,8 +25,7 @@
                 android:layout_weight="1"
                 android:text="Student Name"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -38,80 +33,61 @@
                 android:layout_height="wrap_content"
                 android:text="Pending"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#D32F2F" />
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Registration Number -->
         <TextView
             android:id="@+id/tvRegNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reg No: 123456"
-            android:textSize="14sp"
-            android:textColor="#555555"
-            android:paddingBottom="4dp"/>
+            android:layout_marginTop="4dp"
+            android:text="Reg No: 123456" />
 
-        <!-- Leave Type -->
         <TextView
             android:id="@+id/tvLeaveType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leave Type: Sick Leave"
-            android:textSize="14sp"
-            android:textColor="#555555"
-            android:paddingBottom="4dp"/>
+            android:layout_marginTop="4dp"
+            android:text="Leave Type: Sick Leave" />
 
-        <!-- Leave Duration -->
         <TextView
             android:id="@+id/tvLeaveDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="From: 01/01/2025 To: 05/01/2025"
-            android:textSize="14sp"
-            android:textColor="#555555"
-            android:paddingBottom="4dp"/>
+            android:layout_marginTop="4dp"
+            android:text="From: 01/01/2025 To: 05/01/2025" />
 
-        <!-- Leave Reason -->
         <TextView
             android:id="@+id/tvReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reason: Medical emergency"
-            android:textSize="14sp"
-            android:textColor="#555555"
-            android:paddingBottom="6dp"/>
+            android:layout_marginTop="4dp"
+            android:text="Reason: Medical emergency" />
 
-        <!-- Buttons for Approval (Initially Hidden) -->
         <LinearLayout
-            android:id="@+id/adminButtons"
+            android:id="@+id/layoutButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingTop="10dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnApprove"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="Approve"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/green"
-                android:padding="8dp" />
+                android:backgroundTint="#4CAF50"
+                android:text="Approve" />
 
             <Button
                 android:id="@+id/btnReject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="Reject"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/red"
-                android:layout_marginStart="8dp"
-                android:padding="8dp"/>
+                android:backgroundTint="#F44336"
+                android:text="Reject" />
         </LinearLayout>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

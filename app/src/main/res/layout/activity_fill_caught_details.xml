@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:background="@color/white"
-    tools:context=".FillCaughtDetails">
+    tools:context=".ConductVoilate.FillCaughtDetails">
 
     <!-- Title -->
     <TextView
