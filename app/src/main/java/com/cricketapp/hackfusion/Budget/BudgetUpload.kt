@@ -1,30 +1,26 @@
 package com.cricketapp.hackfusion.Budget
 
-
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.cricketapp.hackfusion.databinding.ActivityBudgetUploadBinding
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class BudgetUploadActivity : AppCompatActivity() {
+class BudgetUpload : AppCompatActivity() {
 
     private lateinit var binding: ActivityBudgetUploadBinding
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var firebaseStorage: FirebaseStorage
+    private val firestore = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
     private val selectedReceiptUris = ArrayList<Uri>()
-    private val uploadedReceiptUrls = ArrayList<String>()
 
-    // Register for activity result to handle image selection
     private val selectImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -33,9 +29,7 @@ class BudgetUploadActivity : AppCompatActivity() {
                 selectedReceiptUris.add(uri)
                 updateSelectedFilesCount()
             }
-            // For multiple image selection
-            val clipData = result.data?.clipData
-            if (clipData != null) {
+            result.data?.clipData?.let { clipData ->
                 for (i in 0 until clipData.itemCount) {
                     selectedReceiptUris.add(clipData.getItemAt(i).uri)
                 }
@@ -49,10 +43,6 @@ class BudgetUploadActivity : AppCompatActivity() {
         binding = ActivityBudgetUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        firebaseStorage = FirebaseStorage.getInstance()
-
         setupCategorySpinner()
         setupListeners()
     }
@@ -65,7 +55,6 @@ class BudgetUploadActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // Choose receipt images
         binding.btnSelectReceipts.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "image/*"
@@ -74,7 +63,6 @@ class BudgetUploadActivity : AppCompatActivity() {
             selectImageLauncher.launch(intent)
         }
 
-        // Upload budget data
         binding.btnSubmitBudget.setOnClickListener {
             if (validateInputs()) {
                 uploadBudgetData()
@@ -83,24 +71,20 @@ class BudgetUploadActivity : AppCompatActivity() {
     }
 
     private fun validateInputs(): Boolean {
-        when {
+        return when {
             binding.editTextTitle.text.isNullOrBlank() -> {
-                showToast("Please enter a title")
-                return false
+                showToast("Please enter a title"); false
             }
             binding.editTextAmount.text.isNullOrBlank() -> {
-                showToast("Please enter an amount")
-                return false
+                showToast("Please enter an amount"); false
             }
             binding.editTextDescription.text.isNullOrBlank() -> {
-                showToast("Please enter a description")
-                return false
+                showToast("Please enter a description"); false
             }
             selectedReceiptUris.isEmpty() -> {
-                showToast("Please select at least one receipt")
-                return false
+                showToast("Please select at least one receipt"); false
             }
-            else -> return true
+            else -> true
         }
     }
 
@@ -112,13 +96,9 @@ class BudgetUploadActivity : AppCompatActivity() {
         binding.progressBar.visibility = android.view.View.VISIBLE
         binding.btnSubmitBudget.isEnabled = false
 
-        // Create a unique ID for this budget entry
         val budgetId = UUID.randomUUID().toString()
-
-        // Upload all receipt images first
         uploadReceiptImages(budgetId) { receiptsList ->
-            // After all images are uploaded, save the budget data
-            saveBudgetDataToFirebase(budgetId, receiptsList)
+            saveBudgetDataToFirestore(budgetId, receiptsList)
         }
     }
 
@@ -131,51 +111,43 @@ class BudgetUploadActivity : AppCompatActivity() {
             return
         }
 
-        selectedReceiptUris.forEachIndexed { index, uri ->
+        selectedReceiptUris.forEach { uri ->
             val receiptId = UUID.randomUUID().toString()
-            val storageRef = firebaseStorage.reference
-                .child("receipts")
-                .child(budgetId)
-                .child("$receiptId.jpg")
+            val storageRef = storage.reference.child("receipts/$budgetId/$receiptId.jpg")
 
             storageRef.putFile(uri)
                 .addOnSuccessListener { taskSnapshot ->
                     taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUrl ->
-                        // Create receipt data
                         val receiptData = mapOf(
                             "receipt_id" to receiptId,
                             "image_url" to downloadUrl.toString(),
-                            "amount" to binding.editTextReceiptAmount.text.toString().toFloatOrNull() ?: 0f,
+                            "amount" to (binding.editTextAmount.text.toString().toFloatOrNull() ?: 0f),
                             "vendor" to binding.editTextVendorName.text.toString(),
                             "date" to SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
                             "description" to binding.editTextReceiptDescription.text.toString()
                         )
-
                         receiptsData.add(receiptData)
                         uploadedCount++
 
-                        // Check if all uploads are complete
                         if (uploadedCount == selectedReceiptUris.size) {
                             onComplete(receiptsData)
                         }
                     }
                 }
-                .addOnFailureListener { exception ->
-                    showToast("Failed to upload receipt: ${exception.message}")
+                .addOnFailureListener {
+                    showToast("Failed to upload receipt: ${it.message}")
                     binding.progressBar.visibility = android.view.View.GONE
                     binding.btnSubmitBudget.isEnabled = true
                 }
         }
     }
 
-    private fun saveBudgetDataToFirebase(budgetId: String, receiptsList: List<Map<String, Any>>) {
+    private fun saveBudgetDataToFirestore(budgetId: String, receiptsList: List<Map<String, Any>>) {
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val budgetAmount = binding.editTextAmount.text.toString().toFloatOrNull() ?: 0f
 
-        // Calculate total spent from receipts
-        val totalSpent = receiptsList.sumOf {
-            (it["amount"] as? Float ?: 0f).toDouble()
-        }
+        val totalSpent = receiptsList.sumOf { (it["amount"] as? Float ?: 0f).toDouble() }
+        val remaining = budgetAmount - totalSpent
 
         val budgetData = mapOf(
             "id" to budgetId,
@@ -184,35 +156,35 @@ class BudgetUploadActivity : AppCompatActivity() {
             "amount" to budgetAmount,
             "description" to binding.editTextDescription.text.toString(),
             "date" to currentDate,
-            "uploaded_by" to "Dean", // Since it's directly pushed by the dean
+            "uploaded_by" to "Dean",
             "receipts" to receiptsList,
             "total_spent" to totalSpent,
-            "remaining" to (budgetAmount - totalSpent)
+            "remaining" to remaining
         )
 
-        // Save to Firebase Realtime Database
-        val dbRef = firebaseDatabase.getReference("budgets")
-        dbRef.child(budgetId).setValue(budgetData)
+        firestore.collection("budgets")
+            .document(budgetId)
+            .set(budgetData)
             .addOnSuccessListener {
-                showToast("Budget data uploaded successfully")
+                showToast("Budget data uploaded successfully!")
                 binding.progressBar.visibility = android.view.View.GONE
                 clearForm()
-                finish() // Return to previous screen
+                finish()
             }
-            .addOnFailureListener { exception ->
-                showToast("Failed to save budget data: ${exception.message}")
+            .addOnFailureListener {
+                showToast("Failed to save budget data: ${it.message}")
                 binding.progressBar.visibility = android.view.View.GONE
                 binding.btnSubmitBudget.isEnabled = true
             }
     }
 
     private fun clearForm() {
-        binding.editTextTitle.text.clear()
-        binding.editTextAmount.text.clear()
-        binding.editTextDescription.text.clear()
-        binding.editTextVendorName.text.clear()
-        binding.editTextReceiptAmount.text.clear()
-        binding.editTextReceiptDescription.text.clear()
+        binding.editTextTitle.text?.clear()
+        binding.editTextAmount.text?.clear()
+        binding.editTextDescription.text?.clear()
+        binding.editTextVendorName.text?.clear()
+        binding.editTextReceiptAmount.text?.clear()
+        binding.editTextReceiptDescription.text?.clear()
         selectedReceiptUris.clear()
         updateSelectedFilesCount()
     }

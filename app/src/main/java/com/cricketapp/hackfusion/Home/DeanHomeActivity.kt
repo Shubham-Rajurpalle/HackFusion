@@ -12,11 +12,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.cricketapp.hackfusion.Booking.facilityFacultyFragment
+import com.cricketapp.hackfusion.Budget.BudgetDisplayFacultyFragment
+import com.cricketapp.hackfusion.Budget.BudgetDisplayFragment
 import com.cricketapp.hackfusion.Complaint.ComplaintFacultyFragment
 import com.cricketapp.hackfusion.R
 import com.cricketapp.hackfusion.databinding.ActivityDeanHomeBinding
 import com.cricketapp.hackfusion.Election.electionFacultyFragment
-import com.cricketapp.hackfusion.application.applicationFacultyFragment
 import com.google.firebase.FirebaseApp
 
 class DeanHomeActivity: AppCompatActivity() {
@@ -87,7 +88,7 @@ class DeanHomeActivity: AppCompatActivity() {
                 R.id.electionIcon -> switchFragment(electionFacultyFragment(), "com.cricketapp.hackfusion.com.cricketapp.hackfusion.Election")
                 R.id.facilityIcon -> switchFragment(facilityFacultyFragment(), "Facility")
                 R.id.complaintIcon -> switchFragment(ComplaintFacultyFragment(), "Complaint")
-                R.id.budgetIcon -> switchFragment(applicationFacultyFragment(), "Budget")
+                R.id.budgetIcon -> switchFragment(BudgetDisplayFacultyFragment(), "Budget")
                 else -> false
             }
             true

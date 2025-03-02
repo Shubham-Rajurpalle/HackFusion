@@ -1,6 +1,7 @@
 package com.cricketapp.hackfusion.Budget
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cricketapp.hackfusion.databinding.FragmentBudgetDisplayBinding
+import com.cricketapp.hackfusion.databinding.FragmentBudgetDisplayFacultyBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class BudgetDisplayFragment : Fragment() {
+class BudgetDisplayFacultyFragment : Fragment() {
 
-    private var _binding: FragmentBudgetDisplayBinding? = null
+    private var _binding: FragmentBudgetDisplayFacultyBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var budgetAdapter: BudgetAdapter
@@ -28,7 +29,7 @@ class BudgetDisplayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBudgetDisplayBinding.inflate(inflater, container, false)
+        _binding = FragmentBudgetDisplayFacultyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,6 +50,10 @@ class BudgetDisplayFragment : Fragment() {
             budgetList.clear()
             budgetAdapter.notifyDataSetChanged()
             loadBudgetData()
+        }
+
+        binding.addBudget.setOnClickListener {
+            startActivity(Intent(requireContext(), BudgetUpload::class.java))
         }
 
         // Setup filter buttons

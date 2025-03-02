@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.cricketapp.hackfusion.Application.applicationFragment
 import com.cricketapp.hackfusion.Booking.facilityFragment
+import com.cricketapp.hackfusion.Budget.BudgetDisplayFragment
 import com.cricketapp.hackfusion.Complaint.complaintFragment
 import com.cricketapp.hackfusion.Election.ElectionFragment
 import com.cricketapp.hackfusion.R
@@ -87,7 +88,7 @@ class home : AppCompatActivity() {
                 R.id.electionIcon -> switchFragment(ElectionFragment(), "com.cricketapp.hackfusion.com.cricketapp.hackfusion.Election")
                 R.id.facilityIcon -> switchFragment(facilityFragment(), "Facility")
                 R.id.complaintIcon -> switchFragment(complaintFragment(), "Complaint")
-                R.id.budgetIcon -> switchFragment(applicationFragment(), "Budget")
+                R.id.budgetIcon -> switchFragment(BudgetDisplayFragment(), "Budget")
                 else -> false
             }
             true

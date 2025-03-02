@@ -52,9 +52,6 @@
             android:name=".ConductVoilate.FillCaughtDetails"
             android:exported="false" />
         <activity
-            android:name=".QRScannerctivity"
-            android:exported="false" />
-        <activity
             android:name=".Complaint.complaint_form"
             android:exported="false" />
         <activity
