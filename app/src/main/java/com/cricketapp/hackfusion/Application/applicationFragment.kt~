@@ -38,12 +38,12 @@ class applicationFragment : Fragment() {
 
         val applyApplication= view.findViewById<Button>(R.id.btnApplyApplication)
         applyApplication.setOnClickListener {
-            val intent = Intent(view.context, ApplyApprovalActivity::class.java)
+            val intent = Intent(requireContext(), ApplyApprovalActivity::class.java)
             startActivity(intent)
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewApplications)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = LeaveApplicationAdapter(leaveApplicationsList) { application, isApproved ->
             updateApplicationStatus(application, isApproved)

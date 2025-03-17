@@ -1,51 +1,29 @@
-package com.cricketapp.hackfusion.Application
+package com.cricketapp.hackfusion.application
 
-import android.app.Fragment
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cricketapp.hackfusion.Application.LeaveApplication
+import com.cricketapp.hackfusion.Application.LeaveApplicationFacultyAdapter
 import com.cricketapp.hackfusion.R
 import com.google.firebase.firestore.FirebaseFirestore
 
-class applicationFragment : Fragment() {
+class ApplicationFaculty : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: LeaveApplicationAdapter
+    private lateinit var adapter: LeaveApplicationFacultyAdapter
     private val leaveApplicationsList = mutableListOf<LeaveApplication>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_application, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_application_faculty)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        recyclerView = findViewById(R.id.recyclerViewApplications)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val applyLeave= view.findViewById<Button>(R.id.btnApplyLeave)
-        applyLeave.setOnClickListener {
-            val intent = Intent(view.context, ApplyLeaveActivity::class.java)
-            startActivity(intent)
-        }
-
-        val applyApplication= view.findViewById<Button>(R.id.btnApplyApplication)
-        applyApplication.setOnClickListener {
-            val intent = Intent(view.context, ApplyApprovalActivity::class.java)
-            startActivity(intent)
-        }
-
-        recyclerView = view.findViewById(R.id.recyclerViewApplications)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-
-        adapter = LeaveApplicationAdapter(leaveApplicationsList) { application, isApproved ->
+        adapter = LeaveApplicationFacultyAdapter(leaveApplicationsList) { application, isApproved ->
             updateApplicationStatus(application, isApproved)
         }
         recyclerView.adapter = adapter
@@ -60,6 +38,7 @@ class applicationFragment : Fragment() {
                 leaveApplicationsList.clear()
                 for (document in result) {
                     val leaveApplication = document.toObject(LeaveApplication::class.java)
+                    leaveApplication.id = document.id // Store Firestore document ID
                     leaveApplicationsList.add(leaveApplication)
                 }
                 adapter.notifyDataSetChanged()
@@ -70,14 +49,19 @@ class applicationFragment : Fragment() {
     }
 
     private fun updateApplicationStatus(application: LeaveApplication, isApproved: Boolean) {
+        if (application.id.isEmpty()) {
+            Log.e("Firestore", "Cannot update: Application ID is empty")
+            return
+        }
+
         val newStatus = if (isApproved) "Approved" else "Rejected"
 
         FirebaseFirestore.getInstance().collection("leave_applications")
-            .document(application.id)
+            .document(application.id) // Now this is always valid
             .update("status", newStatus)
             .addOnSuccessListener {
                 application.status = newStatus
-                adapter.notifyDataSetChanged()
+                adapter.updateItem(application) // Update only modified item in RecyclerView
             }
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Error updating status: ${e.message}")

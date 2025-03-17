@@ -28,6 +28,12 @@
         android:theme="@style/Theme.HackFusion"
         tools:targetApi="31">
         <activity
+            android:name=".Application.Application"
+            android:exported="false" />
+        <activity
+            android:name=".application.ApplicationFaculty"
+            android:exported="false" />
+        <activity
             android:name=".Budget.BudgetUpload"
             android:exported="false" />
         <activity

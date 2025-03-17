@@ -18,6 +18,7 @@ import com.cricketapp.hackfusion.Election.ElectionFragment
 import com.cricketapp.hackfusion.Notification.Notification
 import com.cricketapp.hackfusion.R
 import com.cricketapp.hackfusion.Student
+import com.cricketapp.hackfusion.application.ApplicationFaculty
 import com.cricketapp.hackfusion.databinding.FragmentDeanHomeBinding
 import com.cricketapp.hackfusion.profile_activity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,6 +55,10 @@ class DeanHomeFragment : Fragment() {
 
         setupRecyclerViews()
         fetchData()
+
+        binding.ApproveAppliation.setOnClickListener {
+            startActivity(Intent(requireContext(),ApplicationFaculty::class.java))
+        }
 
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(requireContext(), profile_activity::class.java))

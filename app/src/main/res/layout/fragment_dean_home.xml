@@ -45,14 +45,29 @@
             android:padding="10dp">
 
             <!-- Create Election Button -->
-            <Button
-                android:id="@+id/createElectionBtn"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Election"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/blue"
-                android:textColor="@android:color/white"/>
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/createElectionBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create Election"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@android:color/white"/>
+                <Button
+                    android:id="@+id/ApproveAppliation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Approve Application"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
 
             <!-- Elections Section -->
             <TextView

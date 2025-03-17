@@ -1,49 +1,40 @@
+// File: ApplicationActivity.kt
 package com.cricketapp.hackfusion.Application
 
-import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cricketapp.hackfusion.R
 import com.google.firebase.firestore.FirebaseFirestore
 
-class applicationFragment : Fragment() {
+class Application : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LeaveApplicationAdapter
     private val leaveApplicationsList = mutableListOf<LeaveApplication>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_application, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_application)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val applyLeave= view.findViewById<Button>(R.id.btnApplyLeave)
+        val applyLeave = findViewById<Button>(R.id.btnApplyLeave)
         applyLeave.setOnClickListener {
-            val intent = Intent(view.context, ApplyLeaveActivity::class.java)
+            val intent = Intent(this, ApplyLeaveActivity::class.java)
             startActivity(intent)
         }
 
-        val applyApplication= view.findViewById<Button>(R.id.btnApplyApplication)
+        val applyApplication = findViewById<Button>(R.id.btnApplyApplication)
         applyApplication.setOnClickListener {
-            val intent = Intent(view.context, ApplyApprovalActivity::class.java)
+            val intent = Intent(this, ApplyApprovalActivity::class.java)
             startActivity(intent)
         }
 
-        recyclerView = view.findViewById(R.id.recyclerViewApplications)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView = findViewById(R.id.recyclerViewApplications)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = LeaveApplicationAdapter(leaveApplicationsList) { application, isApproved ->
             updateApplicationStatus(application, isApproved)
